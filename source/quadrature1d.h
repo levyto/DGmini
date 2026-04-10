@@ -35,9 +35,9 @@ class Quadrature1D
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
-    inline int    nip()         const { return points_.size(); };
-    inline double point(int i)  const { return points_[i];     };
-    inline double weight(int i) const { return weights_[i];    };
+    int    nip()         const { return points_.size(); }
+    double point(int i)  const { return points_[i];     }
+    double weight(int i) const { return weights_[i];    }
 
     // -------------------------------------------------------------------------
     // Modification

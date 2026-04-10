@@ -17,7 +17,7 @@
 
 int main()
 {
-  TestRegistry registry;
+  auto& registry = GetTestRegistry();
 
   Register_Test_Vec(registry);
   Register_Test_linalg(registry);
@@ -25,30 +25,20 @@ int main()
   Register_Test_Mesh1D(registry);
   Register_Test_Quadrature1D(registry);
 
-  int n_failed = 0;
 
-  for (const auto& [name, test] : registry.tests())
-  {
-    try
-    {
-      test();
-      std::cout << "[PASS] " << name << '\n';
-    }
-    catch (const std::exception& e)
-    {
-      n_failed++;
-      std::cout << "[FAIL] " << name << " : " << e.what() << '\n';
-    }
-  }
+  registry.run_all();
 
-  if (n_failed == 0)
+
+  std::cout << "\nChecks : " << registry.checks()   << "\n";
+
+  if (registry.failures() == 0)
   {
-    std::cout << "\nAll tests passed.\n";
+    std::cout << "\n[OK] All tests passed\n\n";
     return 0;
   }
   else
   {
-    std::cout << "\n" << n_failed << " test(s) failed.\n";
+    std::cout << "\n[ERROR] " << registry.failures() << " check(s) failed\n\n";
     return 1;
   }
 }

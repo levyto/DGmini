@@ -9,6 +9,7 @@
 #include <cmath>
 
 #include "quadrature1d_ut.h"
+#include "element1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Sum of quadrature weights must be 2 on [-1,1]
@@ -77,4 +78,38 @@ void Test_Quadrature1D_exactness()
       CheckEqual(numeric, exact, 1e-13, "Quadrature exactness failed for monomial");
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+// Description: Exactness of numerical integration on 1D mesh element,
+//              we integrate f(x)=1, f(x)=x and f(x)=x^2 on element [2,4], 
+//              which should give 2, 6 and 56/3 respectively
+// -----------------------------------------------------------------------------
+void Test_Quadrature1D_elemIntegration()
+{
+  Element1D e(2.0, 4.0);
+  Quadrature1D quadrature(2);
+
+  double integral_const = 0.0;
+  double integral_x     = 0.0;
+  double integral_x2    = 0.0;
+
+  for (int i = 0; i < quadrature.nip(); ++i)
+  {
+    const double xi = quadrature.point(i);
+    const double w  = quadrature.weight(i);
+    const double x  = e.mapToPhysical(xi);
+
+    integral_const += w * 1.0;
+    integral_x     += w * x;
+    integral_x2    += w * x * x;
+  }
+
+  integral_const *= e.jacobian();
+  integral_x     *= e.jacobian();
+  integral_x2    *= e.jacobian();
+
+  CheckEqual(integral_const, 2.0,        1e-14, "Integral of 1 failed");
+  CheckEqual(integral_x,     6.0,        1e-14, "Integral of x failed");
+  CheckEqual(integral_x2,    56.0 / 3.0, 1e-14, "Integral of x^2 failed");
 }

@@ -23,8 +23,8 @@ class Element1D
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
-    inline double left()     const { return x_left_;            };
-    inline double right()    const { return x_right_;           };
+    double left()     const { return x_left_;            }
+    double right()    const { return x_right_;           }
 
     // -------------------------------------------------------------------------
     // Modification
@@ -33,8 +33,8 @@ class Element1D
     // -------------------------------------------------------------------------
     // Operations
     // -------------------------------------------------------------------------
-    inline double length()   const { return x_right_ - x_left_; };
-    inline double jacobian() const { return 0.5 * length();     };
+    double length()   const { return x_right_ - x_left_; }
+    double jacobian() const { return 0.5 * length();     }
     double mapToPhysical(double xi) const;
 
   private:

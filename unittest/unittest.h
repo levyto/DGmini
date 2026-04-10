@@ -13,15 +13,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-// -----------------------------------------------------------------------------
-// Description: UT name and function pointer
-// -----------------------------------------------------------------------------
-struct Test
-{
-  std::string name;
-  void (*func)();
-};
+#include <iostream>
 
 // -----------------------------------------------------------------------------
 // Description: UT registry
@@ -36,14 +28,14 @@ class TestRegistry
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
-    const std::vector<Test>& tests() const
-    {
-      return tests_;
-    }
+    int checks()   const { return checks_;   }
+    int failures() const { return failures_; }
 
     // -------------------------------------------------------------------------
     // Modification
     // -------------------------------------------------------------------------
+    void increment_checks()   { checks_++; }
+    void increment_failures() { failures_++; }
     void add(const std::string& name, void (*func)())
     {
       tests_.push_back({name, func});
@@ -52,25 +44,71 @@ class TestRegistry
     // -------------------------------------------------------------------------
     // Operations
     // -------------------------------------------------------------------------
+    void run_all()
+    {
+      for (const auto& [name, test] : tests_)
+      {
+        const int failures_before = failures_;
+
+        try
+        {
+          test();
+        }
+        catch (const std::exception& e)
+        {
+          // Just in case a test throws an exception, 
+          // we catch it to report the failure and continue with other tests
+          increment_failures();
+          std::cout << "[EXCEPTION] " << name << " : " << e.what() << '\n';
+        }
+
+        if (failures_ == failures_before)
+        {
+          std::cout << "[PASS] " << name << '\n';
+        }
+        else
+        {
+          std::cout << "[FAIL] " << name << '\n';
+        }
+      }
+    }
     
   private:
     // -------------------------------------------------------------------------
     // Data
     // -------------------------------------------------------------------------
+    struct Test // UT name and function pointer
+    {
+      std::string name;
+      void (*func)();
+    };
     std::vector<Test> tests_;
+    int checks_ = 0;
+    int failures_ = 0;
 };
+
+// -----------------------------------------------------------------------------
+// Description: Create a global instance of TestRegistry
+// -----------------------------------------------------------------------------
+inline TestRegistry& GetTestRegistry()
+{
+  static TestRegistry instance;
+  return instance;
+}
 
 // -----------------------------------------------------------------------------
 // Description: Boolean check
 // -----------------------------------------------------------------------------
 inline void Check(bool condition, const std::string& message)
 {
+  auto& reg = GetTestRegistry();
+  reg.increment_checks();
+
   if (!condition)
   {
-    throw std::runtime_error
-    (
-      message
-  );
+    reg.increment_failures();
+
+    std::cout << "[ERROR] " << message << '\n';
   }
 }
 
@@ -78,17 +116,20 @@ inline void Check(bool condition, const std::string& message)
 // Description: Floating-point comparison
 // -----------------------------------------------------------------------------
 inline void CheckEqual(double actual,
-                        double expected,
-                        double tol,
-                        const std::string& message)
+                       double expected,
+                       double tol,
+                       const std::string& message)
 {
+  auto& reg = GetTestRegistry();
+  reg.increment_checks();
+  
   if (std::abs(actual - expected) > tol)
   {
-    throw std::runtime_error
-    (
-      message + " | expected = " + std::to_string(expected) 
-              +  ", actual = "   + std::to_string(actual)
-    );
+    reg.increment_failures();
+
+    std::cout << "[ERROR] "       << message
+              << " | expected = " << expected
+              << ", actual = "    << actual   << '\n';
   }
 }
 

@@ -286,8 +286,8 @@ Quadrature1D::Quadrature1D(int order)
       points_[18] =  0.963971927277914; weights_[18] = 0.040601429800387;
       points_[19] =  0.993128599185095; weights_[19] = 0.017614007139152;
       break;
-  default:
-    break;
+    default:
+      break;
   }  
 
 
