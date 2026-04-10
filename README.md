@@ -14,3 +14,9 @@ cmake --build build
 ```bash
 ./build/dgmini
 ```
+
+or
+
+```bash
+./build/dgmini_unittest
+```

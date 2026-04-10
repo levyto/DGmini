@@ -2,10 +2,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug DGmini",
+      "name": "Debug dgmini",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/build/dgmini",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "MIMode": "gdb"
+    }
+    {
+      "name": "Debug dgmini_unittest",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/dgmini_unittest",
       "args": [],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,

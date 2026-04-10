@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build dgmini",
+      "type": "shell",
+      "command": "cmake --build build --target dgmini",
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Build dgmini_unittest",
+      "type": "shell",
+      "command": "cmake --build build --target dgmini_unittest",
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Run dgmini",
+      "type": "shell",
+      "command": "${workspaceFolder}/build/dgmini",
+      "dependsOn": "Build dgmini",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run dgmini_unittest",
+      "type": "shell",
+      "command": "${workspaceFolder}/build/dgmini_unittest",
+      "dependsOn": "Build dgmini_unittest",
+      "problemMatcher": []
+    }
+  ]
+}
