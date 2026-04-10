@@ -2,6 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "CMake Configure",
+      "type": "shell",
+      "command": "cmake -S . -B build",
+      "problemMatcher": []
+    },
+    {
       "label": "Build dgmini",
       "type": "shell",
       "command": "cmake --build build --target dgmini",
