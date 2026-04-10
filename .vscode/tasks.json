@@ -28,6 +28,12 @@
       "command": "${workspaceFolder}/build/dgmini_unittest",
       "dependsOn": "Build dgmini_unittest",
       "problemMatcher": []
+    },
+    {
+      "label": "Count code lines",
+      "type": "shell",
+      "command": "wc -l source/*.cpp source/*.h unittest/*.cpp unittest/*.h",
+      "problemMatcher": []
     }
   ]
 }
