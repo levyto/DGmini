@@ -11,7 +11,9 @@
 
 #include "Vec.h"
 
+double nrm2(const Vec& x);
 double dot(const Vec& x, const Vec& y);
+
 void scal(double alpha, Vec& x);
 void axpy(double alpha, const Vec& x, Vec& y);
 

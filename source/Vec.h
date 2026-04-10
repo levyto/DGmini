@@ -9,6 +9,7 @@
 #ifndef VEC_H
 #define VEC_H
 
+#include <algorithm>
 #include <vector>
 #include <cassert>
 
