@@ -11,6 +11,8 @@
 #include "unittest.h"
 #include "Vec_ut.h"
 #include "linalg_ut.h"
+#include "element1d_ut.h"
+#include "mesh1d_ut.h"
 
 int main()
 {
@@ -18,6 +20,8 @@ int main()
 
   Register_Test_Vec(registry);
   Register_Test_linalg(registry);
+  Register_Test_Element1D(registry);
+  Register_Test_Mesh1D(registry);
 
   int n_failed = 0;
 
