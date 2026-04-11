@@ -31,3 +31,4 @@ void Test_Vec_basic()
   CheckEqual(v[1], 5.0, 1e-14, "Vec fill failed at index 1");
   CheckEqual(v[2], 5.0, 1e-14, "Vec fill failed at index 2");
 }
+

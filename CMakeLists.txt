@@ -21,6 +21,7 @@ add_executable(dgmini_unittest
   unittest/basis1d_ut.cpp
   unittest/element1d_ut.cpp
   unittest/linalg_ut.cpp
+  unittest/Mat_ut.cpp
   unittest/mesh1d_ut.cpp
   unittest/quadrature1d_ut.cpp
   unittest/Vec_ut.cpp

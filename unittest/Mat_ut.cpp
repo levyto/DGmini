@@ -2,27 +2,27 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver              
 // -----------------------------------------------------------------------------
 //
-// Description: Unittests for Vec class
+// Description: Unittests for Mat class
 //
 // -----------------------------------------------------------------------------
 
-#ifndef VEC_UT_H
-#define VEC_UT_H
-
-#include "unittest.h"
-#include "Vec.h"
+#include "Mat_ut.h"
 
 // -----------------------------------------------------------------------------
-// Description: Vec UTs
+// Description: Basic Mat operations
 // -----------------------------------------------------------------------------
-void Test_Vec_basic();
-
-// -----------------------------------------------------------------------------
-// Description: Vec UTs registry
-// -----------------------------------------------------------------------------
-inline void Register_Test_Vec(TestRegistry& registry)
+void Test_Mat_basic()
 {
-  registry.add("Test_Vec_basic", Test_Vec_basic);
-}
+  Mat A(2, 3);
 
-#endif
+  Check(A.rows() == 2, "Mat rows mismatch");
+  Check(A.cols() == 3, "Mat cols mismatch");
+
+  A(1,2) = 7.5;
+  CheckEqual(A(1,2), 7.5, 1e-14, "Mat entry access failed");
+
+  A.fill(3.0);
+
+  CheckEqual(A(0,0), 3.0, 1e-14, "Mat fill failed at (0,0)");
+  CheckEqual(A(1,2), 3.0, 1e-14, "Mat fill failed at (1,2)");
+}
