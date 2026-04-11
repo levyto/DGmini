@@ -10,6 +10,7 @@ add_executable(dgmini
   source/basis1d.cpp
   source/element1d.cpp
   source/linalg.cpp
+  source/massMatrix.cpp
   source/mesh1d.cpp
   source/output.cpp
   source/quadrature1d.cpp
@@ -21,6 +22,7 @@ add_executable(dgmini_unittest
   unittest/basis1d_ut.cpp
   unittest/element1d_ut.cpp
   unittest/linalg_ut.cpp
+  unittest/massMatrix_ut.cpp
   unittest/Mat_ut.cpp
   unittest/mesh1d_ut.cpp
   unittest/quadrature1d_ut.cpp
@@ -28,6 +30,7 @@ add_executable(dgmini_unittest
   source/basis1d.cpp
   source/element1d.cpp
   source/linalg.cpp
+  source/massMatrix.cpp
   source/mesh1d.cpp
   source/quadrature1d.cpp
 )

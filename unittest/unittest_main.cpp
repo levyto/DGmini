@@ -16,6 +16,7 @@
 #include "quadrature1d_ut.h"
 #include "basis1d_ut.h"
 #include "Mat_ut.h"
+#include "massMatrix_ut.h"
 
 int main()
 {
@@ -28,6 +29,7 @@ int main()
   Register_Test_Quadrature1D(registry);
   Register_Test_basis1D(registry);
   Register_Test_Mat(registry);
+  Register_Test_massMatrix1D(registry);
 
 
   registry.run_all();
