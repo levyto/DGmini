@@ -16,14 +16,12 @@ cmake --build build
 ```
 
 **VS Code interface**: Following the definitions in `.vscode/tasks.json`, one can also:
-
-1) Clone repo
-2) Open `DGmini` folder in VS Code
-3) Press F1, select `Tasks: Run Task`, select `CMake Configure`
-4) Press F1, select `Tasks: Run Task`, select `Build dgmini`
-5) Press F1, select `Tasks: Run Task`, select `Run dgmini`
-6) Press F1, select `Tasks: Run Task`, select `Build dgmini_unittest`
-7) Press F1, select `Tasks: Run Task`, select `Run dgmini_unittest`
+1) Open `DGmini` folder in VS Code
+2) Press F1, select `Tasks: Run Task`, select `CMake Configure`
+3) Press F1, select `Tasks: Run Task`, select `Build dgmini`
+4) Press F1, select `Tasks: Run Task`, select `Run dgmini`
+5) Press F1, select `Tasks: Run Task`, select `Build dgmini_unittest`
+6) Press F1, select `Tasks: Run Task`, select `Run dgmini_unittest`
 
 ---
 
