@@ -14,6 +14,7 @@
 #include "element1d_ut.h"
 #include "mesh1d_ut.h"
 #include "quadrature1d_ut.h"
+#include "basis1d_ut.h"
 
 int main()
 {
@@ -24,6 +25,7 @@ int main()
   Register_Test_Element1D(registry);
   Register_Test_Mesh1D(registry);
   Register_Test_Quadrature1D(registry);
+  Register_Test_basis1D(registry);
 
 
   registry.run_all();

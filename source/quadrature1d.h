@@ -16,8 +16,8 @@
 //
 // -----------------------------------------------------------------------------
 
-#ifndef QUADRATURE_H
-#define QUADRATURE_H
+#ifndef QUADRATURE1D_H
+#define QUADRATURE1D_H
 
 #include "Vec.h"
 

@@ -7,6 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(dgmini 
   source/main.cpp
+  source/basis1d.cpp
   source/element1d.cpp
   source/linalg.cpp
   source/mesh1d.cpp
@@ -17,11 +18,13 @@ target_include_directories(dgmini PRIVATE source)
 
 add_executable(dgmini_unittest
   unittest/unittest_main.cpp
+  unittest/basis1d_ut.cpp
   unittest/element1d_ut.cpp
   unittest/linalg_ut.cpp
   unittest/mesh1d_ut.cpp
   unittest/quadrature1d_ut.cpp
   unittest/Vec_ut.cpp
+  source/basis1d.cpp
   source/element1d.cpp
   source/linalg.cpp
   source/mesh1d.cpp
