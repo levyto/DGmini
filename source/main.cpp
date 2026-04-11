@@ -23,6 +23,8 @@ int main()
 
   auto pde = createPDE("linear_advection1d");
 
+  auto numFlux = createNumericalFlux("rusanov");
+
   const int Ne = 4;
   const double x0 = 0.0;
   const double x1 = 1.0;

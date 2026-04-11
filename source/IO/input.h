@@ -12,7 +12,9 @@
 #include <memory>
 
 #include "PDE/pde.h"
+#include "Spatial/numerical_flux.h"
 
 std::unique_ptr<PDE> createPDE(const std::string& name);
+std::unique_ptr<NumericalFlux> createNumericalFlux(const std::string& name);
 
 #endif
