@@ -1,6 +1,6 @@
 # DGmini, a minimal 1D discontinuous Galerkin solver
 
-Light-weight 1D DG reference C++ implementation intended for experimentation and understanding of DG building blocks.
+A lightweight C++ implementation of a 1D Discontinuous Galerkin (DG) solver, intended for experimentation and understanding of core DG building blocks.
 
 ---
 
