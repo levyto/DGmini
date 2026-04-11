@@ -8,8 +8,8 @@
 
 #include <cassert>
 
-#include "FEM/mass_matrix.h"
-#include "FEM/basis1d.h"
+#include "mass_matrix.h"
+#include "basis1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Build local mass matrix on reference 1D element assuming the 
@@ -20,14 +20,15 @@
 //                  M_e_physical = M_e_reference * J,
 //              where J is the Jacobian of the element.
 // -----------------------------------------------------------------------------
-Mat buildMassMatrix1D(const Quadrature1D& quadrature,
-                      int p)
+void buildMassMatrix1D(const Quadrature1D& quadrature, int p, Mat& M_e)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
   
-  Mat M_e(n_dofs, n_dofs);
+  assert(M_e.rows() == n_dofs);
+  assert(M_e.cols() == n_dofs);
+
   Vec phi(n_dofs);
   Vec dphi(n_dofs);
 
@@ -46,7 +47,12 @@ Mat buildMassMatrix1D(const Quadrature1D& quadrature,
       }
     }
   }
+}
 
+Mat buildMassMatrix1D(const Quadrature1D& quadrature, int p)
+{
+  Mat M_e(p + 1, p + 1);
+  buildMassMatrix1D(quadrature, p, M_e);
   return M_e;
 }
 
@@ -62,19 +68,25 @@ Mat buildMassMatrix1D(const Quadrature1D& quadrature,
 //                  M_e_physical = M_e_reference * J,
 //              where J is the Jacobian of the element.
 // -----------------------------------------------------------------------------
-Mat buildMassMatrix1D(int p)
+void buildMassMatrix1D(int p, Mat& M_e)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
 
-  Mat M_e(n_dofs, n_dofs);
+  assert(M_e.rows() == n_dofs);
+  assert(M_e.cols() == n_dofs);
 
   for (int i = 0; i < n_dofs; i++)
   {
     M_e(i, i) = 2.0 / (2.0 * i + 1.0);
   }
-  
+}
+
+Mat buildMassMatrix1D(int p)
+{  
+  Mat M_e(p + 1, p + 1);
+  buildMassMatrix1D(p, M_e);
   return M_e;
 }
 
@@ -90,18 +102,25 @@ Mat buildMassMatrix1D(int p)
 //                  M_e_physical = M_e_reference * J,
 //              where J is the Jacobian of the element.
 // -----------------------------------------------------------------------------
-Mat buildMassMatrix1DInverse(int p)
+void buildMassMatrix1DInverse(int p, Mat& M_e_inv)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
 
-  Mat M_e_inv(n_dofs, n_dofs);
+  assert(M_e_inv.rows() == n_dofs);
+  assert(M_e_inv.cols() == n_dofs);
 
   for (int i = 0; i < n_dofs; i++)
   {
     M_e_inv(i, i) = (2.0 * i + 1.0) / 2.0;
   }
+}
+
+Mat buildMassMatrix1DInverse(int p)
+{
+  Mat M_e_inv(p + 1, p + 1);
+  buildMassMatrix1DInverse(p, M_e_inv);
   
   return M_e_inv;
 }

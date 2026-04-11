@@ -13,8 +13,11 @@
 #include "FEM/quadrature1d.h"
 #include "Mesh/element1d.h"
 
-Mat buildMassMatrix1D(const Quadrature1D& quadrature, int p);
-Mat buildMassMatrix1D(int p);
-Mat buildMassMatrix1DInverse(int p);
+void buildMassMatrix1D(const Quadrature1D& quadrature, int p, Mat& M_e);
+Mat  buildMassMatrix1D(const Quadrature1D& quadrature, int p);
+void buildMassMatrix1D(int p, Mat& M_e);
+Mat  buildMassMatrix1D(int p);
+void buildMassMatrix1DInverse(int p, Mat& M_e);
+Mat  buildMassMatrix1DInverse(int p);
 
 #endif

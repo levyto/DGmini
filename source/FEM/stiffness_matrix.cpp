@@ -19,13 +19,15 @@
 //              The stiffness matrix is computed as:
 //                  K_e(i,j) = \int_Omega_e dphi_i(xi) * phi_j(xi)
 // -----------------------------------------------------------------------------
-Mat buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p)
+void buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p, Mat& K_e)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
   
-  Mat K_e(n_dofs, n_dofs);
+  assert(K_e.rows() == n_dofs);
+  assert(K_e.cols() == n_dofs);
+
   Vec phi(n_dofs);
   Vec dphi(n_dofs);
 
@@ -44,7 +46,12 @@ Mat buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p)
       }
     }
   }
+}
 
+Mat buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p)
+{
+  Mat K_e(p + 1, p + 1);
+  buildStiffnessMatrix1D(quadrature, p, K_e);
   return K_e;
 }
 
@@ -71,13 +78,14 @@ Mat buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p)
 //                4     0   2   0   2   0   0
 //                5     2   0   2   0   2   0
 // -----------------------------------------------------------------------------
-Mat buildStiffnessMatrix1D(int p)
+void buildStiffnessMatrix1D(int p, Mat& K_e)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
 
-  Mat K_e(n_dofs, n_dofs);
+  assert(K_e.rows() == n_dofs);
+  assert(K_e.cols() == n_dofs);
 
   for (int i = 0; i <= p; ++i)
   {
@@ -89,6 +97,11 @@ Mat buildStiffnessMatrix1D(int p)
         K_e(i,j) = 0.0;
     }
   }
-  
+}
+
+Mat buildStiffnessMatrix1D(int p)
+{
+  Mat K_e(p + 1, p + 1);
+  buildStiffnessMatrix1D(p, K_e);
   return K_e;
 }

@@ -12,7 +12,9 @@
 #include "Algebra/Mat.h"
 #include "FEM/quadrature1d.h"
 
-Mat buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p);
-Mat buildStiffnessMatrix1D(int p);
+void buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p, Mat& K_e);
+Mat  buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p);
+void buildStiffnessMatrix1D(int p, Mat& K_e);
+Mat  buildStiffnessMatrix1D(int p);
 
 #endif

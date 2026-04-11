@@ -15,14 +15,16 @@
 // -----------------------------------------------------------------------------
 // Description: Stiffness matrix UTs
 // -----------------------------------------------------------------------------
-void Test_stiffnessMatrix1D_numVsAnalytic();
+void Test_stiffnessMatrix1D_numVsAnalyticLowLvl();
+void Test_stiffnessMatrix1D_numVsAnalyticHighLvl();
 
 // -----------------------------------------------------------------------------
 // Description: Stiffness matrix UTs registry
 // -----------------------------------------------------------------------------
 inline void Register_Test_stiffnessMatrix1D(TestRegistry& registry)
 {
-  registry.add("Test_stiffnessMatrix1D_numVsAnalytic", Test_stiffnessMatrix1D_numVsAnalytic);
+  registry.add("Test_stiffnessMatrix1D_numVsAnalyticLowLvl",  Test_stiffnessMatrix1D_numVsAnalyticLowLvl );
+  registry.add("Test_stiffnessMatrix1D_numVsAnalyticHighLvl", Test_stiffnessMatrix1D_numVsAnalyticHighLvl);
 }
 
 #endif

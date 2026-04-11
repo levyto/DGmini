@@ -15,16 +15,20 @@
 // -----------------------------------------------------------------------------
 // Description: Mass matrix UTs
 // -----------------------------------------------------------------------------
-void Test_massMatrix1D_numVsAnalytic();
-void Test_massMatrix1D_inverse();
+void Test_massMatrix1D_numVsAnalyticLowLvl();
+void Test_massMatrix1D_numVsAnalyticHighLvl();
+void Test_massMatrix1D_inverseLowLvl();
+void Test_massMatrix1D_inverseHighLvl();
 
 // -----------------------------------------------------------------------------
 // Description: Mass matrix UTs registry
 // -----------------------------------------------------------------------------
 inline void Register_Test_massMatrix1D(TestRegistry& registry)
 {
-  registry.add("Test_massMatrix1D_numVsAnalytic", Test_massMatrix1D_numVsAnalytic);
-  registry.add("Test_massMatrix1D_inverse",       Test_massMatrix1D_inverse);
+  registry.add("Test_massMatrix1D_numVsAnalyticLowLvl",  Test_massMatrix1D_numVsAnalyticLowLvl );
+  registry.add("Test_massMatrix1D_numVsAnalyticHighLvl", Test_massMatrix1D_numVsAnalyticHighLvl);
+  registry.add("Test_massMatrix1D_inverseLowLvl",        Test_massMatrix1D_inverseLowLvl       );
+  registry.add("Test_massMatrix1D_inverseHighLvl",       Test_massMatrix1D_inverseHighLvl      );
 }
 
 #endif

@@ -16,7 +16,36 @@
 //              matches the analytical one computed using the orthogonality of 
 //              Legendre polynomials
 // -----------------------------------------------------------------------------
-void Test_stiffnessMatrix1D_numVsAnalytic()
+void Test_stiffnessMatrix1D_numVsAnalyticLowLvl()
+{
+  const int p = 5;
+  const double tol = 1e-12;
+
+  Quadrature1D quadrature(2 * p);
+
+  Mat K_num(p + 1, p + 1);
+  buildStiffnessMatrix1D(quadrature, p, K_num);
+  Mat K_ref(p + 1, p + 1);
+  buildStiffnessMatrix1D(p, K_ref);
+
+  for (int i = 0; i <= p; ++i)
+  {
+    for (int j = 0; j <= p; ++j)
+    {
+      std::ostringstream oss;
+      oss << "Stiffness matrix mismatch at (" << i << "," << j << ")";
+
+      CheckEqual(K_num(i, j), K_ref(i, j), tol, oss.str());
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Description: Check if numerically integrated stiffness matrix using quadrature 
+//              matches the analytical one computed using the orthogonality of 
+//              Legendre polynomials
+// -----------------------------------------------------------------------------
+void Test_stiffnessMatrix1D_numVsAnalyticHighLvl()
 {
   const int p = 5;
   const double tol = 1e-12;
