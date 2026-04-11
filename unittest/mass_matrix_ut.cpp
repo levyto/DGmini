@@ -8,7 +8,7 @@
 
 #include <sstream>
 
-#include "massMatrix_ut.h"
+#include "mass_matrix_ut.h"
 #include "element1d.h"
 #include "quadrature1d.h"
 #include "linalg.h"

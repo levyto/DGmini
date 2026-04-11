@@ -16,7 +16,7 @@
 #include "quadrature1d_ut.h"
 #include "basis1d_ut.h"
 #include "Mat_ut.h"
-#include "massMatrix_ut.h"
+#include "mass_matrix_ut.h"
 
 int main()
 {

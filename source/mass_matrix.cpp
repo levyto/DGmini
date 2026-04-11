@@ -8,7 +8,7 @@
 
 #include <cassert>
 
-#include "massMatrix.h"
+#include "mass_matrix.h"
 #include "basis1d.h"
 
 // -----------------------------------------------------------------------------
