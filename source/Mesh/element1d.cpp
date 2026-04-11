@@ -26,3 +26,11 @@ double Element1D::mapToPhysical(double xi) const
 {
   return 0.5 * (x_left_ + x_right_) + 0.5 * (x_right_ - x_left_) * xi;
 }
+
+// -----------------------------------------------------------------------------
+// Description: Map x in [x_left_, x_right_] to reference coordinate xi in [-1,1]
+// -----------------------------------------------------------------------------
+double Element1D::mapToReference(double x) const
+{
+  return (2.0 * x - (x_left_ + x_right_)) / (x_right_ - x_left_);
+}

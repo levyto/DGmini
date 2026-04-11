@@ -21,6 +21,8 @@ add_executable(dgmini
 
   source/Mesh/element1d.cpp
   source/Mesh/mesh1d.cpp
+
+  source/Spatial/l2_projection.cpp
 )
 target_include_directories(dgmini PRIVATE source)
 
@@ -29,6 +31,7 @@ add_executable(dgmini_unittest
   unittest/basis1d_ut.cpp
   unittest/element1d_ut.cpp
   unittest/fespace1d_ut.cpp
+  unittest/l2_projection_ut.cpp
   unittest/linalg_ut.cpp
   unittest/mass_matrix_ut.cpp
   unittest/Mat_ut.cpp
@@ -49,5 +52,7 @@ add_executable(dgmini_unittest
 
   source/Mesh/element1d.cpp
   source/Mesh/mesh1d.cpp
+
+  source/Spatial/l2_projection.cpp
 )
 target_include_directories(dgmini_unittest PRIVATE source unittest)

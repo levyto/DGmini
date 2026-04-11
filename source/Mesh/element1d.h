@@ -36,6 +36,7 @@ class Element1D
     double length()   const { return x_right_ - x_left_; }
     double jacobian() const { return 0.5 * length();     }
     double mapToPhysical(double xi) const;
+    double mapToReference(double xi) const;
 
   private:
     // -------------------------------------------------------------------------

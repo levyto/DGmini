@@ -7,12 +7,14 @@
 //
 // -----------------------------------------------------------------------------
 
+#include <cmath>
 #include <iostream>
 
 #include "FEM/fespace1d.h"
 #include "IO/input.h"
 #include "IO/output.h"
 #include "Mesh/mesh1d.h"
+#include "Spatial/l2_projection.h"
 
 using std::cout;
 using ModalSolution1D = std::vector<Vec>;
@@ -25,9 +27,9 @@ int main()
 
   auto numFlux = createNumericalFlux("rusanov");
 
-  const int Ne = 4;
+  const int Ne = 16;
   const double x0 = 0.0;
-  const double x1 = 1.0;
+  const double x1 = 6.283185307179586; // 2*pi
   const int p = 2;
 
   FESpace1D fe(p);
@@ -35,18 +37,26 @@ int main()
 
   ModalSolution1D sol(mesh.Ne(), Vec(fe.DoFs()));
 
-  for (int i = 0; i < mesh.Ne(); ++i)
+  for (int e = 0; e < mesh.Ne(); ++e)
   {
-    cout << "Element " << i
-         << ": ["      << mesh.element(i).left()
-         << ", "       << mesh.element(i).right()
+    cout << "Element " << e
+         << ": ["      << mesh.element(e).left()
+         << ", "       << mesh.element(e).right()
          << "]\n";
   }
 
-  sol[0][0] = 1.0; sol[0][1] = 0.1; sol[0][2] = 0.0;
-  sol[1][0] = 0.8; sol[1][1] = 0.2; sol[1][2] = 0.0;
-  sol[2][0] = 0.6; sol[2][1] = 0.3; sol[2][2] = 0.1;
-  sol[3][0] = 0.4; sol[3][1] = 0.1; sol[3][2] = 0.0;
+  auto u0 = [](double x) { return std::sin(x); };
+
+  for (int e = 0; e < mesh.Ne(); e++)
+  {
+    L2ProjectionOnElement(fe, mesh.element(e), u0, sol[e]);
+  }
+  
+
+  // sol[0][0] = 1.0; sol[0][1] = 0.1; sol[0][2] = 0.0;
+  // sol[1][0] = 0.8; sol[1][1] = 0.2; sol[1][2] = 0.0;
+  // sol[2][0] = 0.6; sol[2][1] = 0.3; sol[2][2] = 0.1;
+  // sol[3][0] = 0.4; sol[3][1] = 0.1; sol[3][2] = 0.0;
 
   writeModalSolution1D("solution.dat", mesh, sol);
 

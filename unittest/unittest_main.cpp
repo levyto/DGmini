@@ -21,6 +21,7 @@
 #include "fespace1d_ut.h"
 #include "pde_ut.h"
 #include "numerical_flux_ut.h"
+#include "l2_projection_ut.h"
 
 int main()
 {
@@ -38,6 +39,7 @@ int main()
   Register_Test_FESpace1D(registry);
   Register_Test_PDE(registry);
   Register_Test_NumericalFlux(registry);
+  Register_Test_L2Projection(registry);
 
 
   registry.run_all();
