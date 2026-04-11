@@ -51,6 +51,8 @@ cmake --build build
 └──template/     templates for new classes
 ```
 
+---
+
 ## Architecture Overview
 - *PDE* defines the physical model (e.g. linear advection, Burgers' equation)
 - *Spatial* implements the spatial discretization (DG operators, numerical fluxes)
@@ -63,3 +65,5 @@ This separation keeps the code modular and allows independent extension of:
 - physical models
 - numerical schemes
 - basis functions and numerical quadrature [hard-coded for now]
+
+---
