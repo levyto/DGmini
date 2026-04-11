@@ -33,6 +33,8 @@ add_executable(dgmini_unittest
   unittest/mass_matrix_ut.cpp
   unittest/Mat_ut.cpp
   unittest/mesh1d_ut.cpp
+  unittest/numerical_flux_ut.cpp
+  unittest/pde_ut.cpp
   unittest/quadrature1d_ut.cpp
   unittest/stiffness_matrix_ut.cpp
   unittest/Vec_ut.cpp

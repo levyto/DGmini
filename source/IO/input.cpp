@@ -29,7 +29,7 @@ std::unique_ptr<PDE> createPDE(const std::string& name)
 }
 
 // -----------------------------------------------------------------------------
-// Description: Create a PDE instance based on its name
+// Description: Create a NumericalFlux instance based on its name
 // -----------------------------------------------------------------------------
 std::unique_ptr<NumericalFlux> createNumericalFlux(const std::string& name)
 {

@@ -11,6 +11,8 @@
 #ifndef NUMERICAL_FLUX_H
 #define NUMERICAL_FLUX_H
 
+#include "PDE/pde.h"
+
 class NumericalFlux
 {
   public:
