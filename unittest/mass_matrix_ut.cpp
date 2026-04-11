@@ -9,7 +9,6 @@
 #include <sstream>
 
 #include "mass_matrix_ut.h"
-#include "element1d.h"
 #include "quadrature1d.h"
 #include "linalg.h"
 
@@ -23,11 +22,10 @@ void Test_massMatrix1D_numVsAnalytic()
   const int p = 4;
   const double tol = 1e-12;
 
-  Element1D element(-2.0, 4.0);
   Quadrature1D quadrature(2 * p);
 
-  Mat M_num = buildMassMatrix1D(element, quadrature, p);
-  Mat M_ref = buildMassMatrix1D(element, p);
+  Mat M_num = buildMassMatrix1D(quadrature, p);
+  Mat M_ref = buildMassMatrix1D(p);
 
   for (int i = 0; i <= p; ++i)
   {
@@ -49,9 +47,8 @@ void Test_massMatrix1D_inverse()
   const int p = 5;
   const double tol = 1e-12;
 
-  Element1D element(1.1, 3.6);
-  Mat M     = buildMassMatrix1D(element, p);
-  Mat M_inv = buildMassMatrix1DInverse(element, p);
+  Mat M     = buildMassMatrix1D(p);
+  Mat M_inv = buildMassMatrix1DInverse(p);
   Mat I     = gemm(M_inv, M);
 
   for (int i = 0; i <= p; ++i)

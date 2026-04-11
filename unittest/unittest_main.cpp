@@ -18,6 +18,7 @@
 #include "Mat_ut.h"
 #include "mass_matrix_ut.h"
 #include "stiffness_matrix_ut.h"
+#include "fespace1d_ut.h"
 
 int main()
 {
@@ -32,6 +33,7 @@ int main()
   Register_Test_Mat(registry);
   Register_Test_massMatrix1D(registry);
   Register_Test_stiffnessMatrix1D(registry);
+  Register_Test_FESpace1D(registry);
 
 
   registry.run_all();

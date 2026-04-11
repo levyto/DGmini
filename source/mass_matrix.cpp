@@ -12,18 +12,20 @@
 #include "basis1d.h"
 
 // -----------------------------------------------------------------------------
-// Description: Build local mass matrix on one 1D element assuming the order 
-//              of the basis functions is p for every element, i.e the Element1D 
-//              does not store info about p, quadrature nor basis functions.
+// Description: Build local mass matrix on reference 1D element assuming the 
+//              order of the basis functions is p.
+//
+//              Note that the mass matrix on the physical element can be 
+//              obtained from the mass matrix on the reference element as: 
+//                  M_e_physical = M_e_reference * J,
+//              where J is the Jacobian of the element.
 // -----------------------------------------------------------------------------
-Mat buildMassMatrix1D(const Element1D& element,
-                      const Quadrature1D& quadrature,
+Mat buildMassMatrix1D(const Quadrature1D& quadrature,
                       int p)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
-  const double J = element.jacobian();
   
   Mat M_e(n_dofs, n_dofs);
   Vec phi(n_dofs);
@@ -40,7 +42,7 @@ Mat buildMassMatrix1D(const Element1D& element,
     {
       for (int j = 0; j < n_dofs; ++j)
       {
-        M_e(i, j) += w * phi[i] * phi[j] * J;
+        M_e(i, j) += w * phi[i] * phi[j];
       }
     }
   }
@@ -49,50 +51,56 @@ Mat buildMassMatrix1D(const Element1D& element,
 }
 
 // -----------------------------------------------------------------------------
-// Description: Build local mass matrix on one 1D element assuming the Legendre 
-//              basis functions are used and the order of the basis functions is 
-//              p for every element, i.e, the mass matrix is diagonal and the 
-//              diagonal entries can be computed as: 
-//                  M_e(n,n) = 2/(2*n+1)*J, 
+// Description: Build local mass matrix on reference 1D element assuming the 
+//              Legendre basis functions are used and the order of the basis 
+//              functions is p for every element, i.e, the mass matrix is
+//              diagonal and the diagonal entries can be computed as: 
+//                  M_e(n,n) = 2/(2*n+1).
+//                
+//              Note that the mass matrix on the physical element can be 
+//              obtained from the mass matrix on the reference element as: 
+//                  M_e_physical = M_e_reference * J,
 //              where J is the Jacobian of the element.
 // -----------------------------------------------------------------------------
-Mat buildMassMatrix1D(const Element1D& element, int p)
+Mat buildMassMatrix1D(int p)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
-  const double J = element.jacobian();
 
   Mat M_e(n_dofs, n_dofs);
 
   for (int i = 0; i < n_dofs; i++)
   {
-    M_e(i, i) = 2.0 / (2.0 * i + 1.0) * J;
+    M_e(i, i) = 2.0 / (2.0 * i + 1.0);
   }
   
   return M_e;
 }
 
 // -----------------------------------------------------------------------------
-// Description: Build local mass matrix inverse on one 1D element assuming the 
-//              Legendre basis functions are used and the order of the basis 
+// Description: Build local mass matrix inverse on reference 1D element assuming 
+//              the Legendre basis functions are used and the order of the basis 
 //              functions is p for every element, i.e, the mass matrix is 
 //              diagonal and the diagonal entries can be computed as: 
-//                  M_e(n,n) = 2/(2*n+1)*J, 
+//                  M_e(n,n) = 2/(2*n+1).
+//                
+//              Note that the mass matrix on the physical element can be 
+//              obtained from the mass matrix on the reference element as: 
+//                  M_e_physical = M_e_reference * J,
 //              where J is the Jacobian of the element.
 // -----------------------------------------------------------------------------
-Mat buildMassMatrix1DInverse(const Element1D& element, int p)
+Mat buildMassMatrix1DInverse(int p)
 {
   assert(p >= 0);
 
   const int n_dofs = p + 1;
-  const double J = element.jacobian();
 
   Mat M_e_inv(n_dofs, n_dofs);
 
   for (int i = 0; i < n_dofs; i++)
   {
-    M_e_inv(i, i) = (2.0 * i + 1.0) / (2.0 * J);
+    M_e_inv(i, i) = (2.0 * i + 1.0) / 2.0;
   }
   
   return M_e_inv;

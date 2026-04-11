@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "mesh1d.h"
+#include "fespace1d.h"
 #include "output.h"
 
 using std::cout;
@@ -18,7 +19,14 @@ int main()
 {
   std::cout << "DGmini: startup OK\n";
 
-  Mesh1D mesh(0.0, 1.0, 4);
+  const int Ne = 4;
+  const double x0 = 0.0;
+  const double x1 = 1.0;
+  const int p = 2;
+
+  FESpace1D fe(p);
+  Mesh1D mesh(x0, x1, Ne);
+  std::vector<Vec> u(mesh.Ne(), Vec(fe.DoFs()));
 
   for (int i = 0; i < mesh.Ne(); ++i)
   {
@@ -28,14 +36,12 @@ int main()
          << "]\n";
   }
 
-  std::vector<Vec> coeffs(mesh.Ne(), Vec(3));
+  u[0][0] = 1.0; u[0][1] = 0.1; u[0][2] = 0.0;
+  u[1][0] = 0.8; u[1][1] = 0.2; u[1][2] = 0.0;
+  u[2][0] = 0.6; u[2][1] = 0.3; u[2][2] = 0.1;
+  u[3][0] = 0.4; u[3][1] = 0.1; u[3][2] = 0.0;
 
-  coeffs[0][0] = 1.0; coeffs[0][1] = 0.1; coeffs[0][2] = 0.0;
-  coeffs[1][0] = 0.8; coeffs[1][1] = 0.2; coeffs[1][2] = 0.0;
-  coeffs[2][0] = 0.6; coeffs[2][1] = 0.3; coeffs[2][2] = 0.1;
-  coeffs[3][0] = 0.4; coeffs[3][1] = 0.1; coeffs[3][2] = 0.0;
-
-  writeModalSolution1D("solution.dat", mesh, coeffs);
+  writeModalSolution1D("solution.dat", mesh, u);
 
   return 0;
 }
