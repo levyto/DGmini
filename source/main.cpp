@@ -11,13 +11,17 @@
 
 #include "mesh1d.h"
 #include "fespace1d.h"
+#include "input.h"
 #include "output.h"
 
 using std::cout;
+using ModalSolution1D = std::vector<Vec>;
 
 int main()
 {
   std::cout << "DGmini: startup OK\n";
+
+  auto pde = createPDE("linear_advection1d");
 
   const int Ne = 4;
   const double x0 = 0.0;
@@ -26,7 +30,8 @@ int main()
 
   FESpace1D fe(p);
   Mesh1D mesh(x0, x1, Ne);
-  std::vector<Vec> u(mesh.Ne(), Vec(fe.DoFs()));
+
+  ModalSolution1D sol(mesh.Ne(), Vec(fe.DoFs()));
 
   for (int i = 0; i < mesh.Ne(); ++i)
   {
@@ -36,12 +41,12 @@ int main()
          << "]\n";
   }
 
-  u[0][0] = 1.0; u[0][1] = 0.1; u[0][2] = 0.0;
-  u[1][0] = 0.8; u[1][1] = 0.2; u[1][2] = 0.0;
-  u[2][0] = 0.6; u[2][1] = 0.3; u[2][2] = 0.1;
-  u[3][0] = 0.4; u[3][1] = 0.1; u[3][2] = 0.0;
+  sol[0][0] = 1.0; sol[0][1] = 0.1; sol[0][2] = 0.0;
+  sol[1][0] = 0.8; sol[1][1] = 0.2; sol[1][2] = 0.0;
+  sol[2][0] = 0.6; sol[2][1] = 0.3; sol[2][2] = 0.1;
+  sol[3][0] = 0.4; sol[3][1] = 0.1; sol[3][2] = 0.0;
 
-  writeModalSolution1D("solution.dat", mesh, u);
+  writeModalSolution1D("solution.dat", mesh, sol);
 
   return 0;
 }

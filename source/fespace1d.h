@@ -29,16 +29,29 @@ class FESpace1D
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
-    int    order()            const { return p_;                 }
-    int    DoFs()             const { return p_ + 1;             }
-    int    nip()              const { return quadrature_.nip();  }
-    double phi(int q, int i)  const { return phi_q_(q, i);       }
-    double dphi(int q, int i) const { return dphi_q_(q, i);      }
-    double phiLeft(int i)     const { return phi_left_[i];       }
-    double phiRight(int i)    const { return phi_right_[i];      }
+    // Order of the basis functions
+    int order() const { return p_;     }
 
+    // Number of DoFs per reference element
+    int DoFs()  const { return p_ + 1; }
+
+    // Number of integration points
+    int nip()   const { return quadrature_.nip(); }
+
+    // DoF i basis function evaluated at integration point q
+    double phi(int q, int i)  const { return phi_q_(q, i);  }
+
+    // Derivative of DoF i basis function evaluated at integration point q
+    double dphi(int q, int i) const { return dphi_q_(q, i); }
+
+    // DoF i basis functions evaluated at left and right boundaries
+    double phiLeft(int i)     const { return phi_left_[i];  }
+    double phiRight(int i)    const { return phi_right_[i]; }
+
+    // Quadrature rule on reference element
     const Quadrature1D& quadrature() const { return quadrature_; }
-
+    
+    // Mass and stiffness matrices on reference element
     const Mat& massMatrix()          const { return M_;          }
     const Mat& inverseMassMatrix()   const { return M_inv_;      }
     const Mat& stiffnessMatrix()     const { return K_;          }

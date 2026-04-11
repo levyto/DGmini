@@ -10,6 +10,7 @@ add_executable(dgmini
   source/basis1d.cpp
   source/element1d.cpp
   source/fespace1d.cpp
+  source/input.cpp
   source/linalg.cpp
   source/mass_matrix.cpp
   source/mesh1d.cpp
