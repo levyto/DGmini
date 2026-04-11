@@ -9,7 +9,7 @@
 #include <cmath>
 
 #include "quadrature1d_ut.h"
-#include "element1d.h"
+#include "Mesh/element1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Sum of quadrature weights must be 2 on [-1,1]

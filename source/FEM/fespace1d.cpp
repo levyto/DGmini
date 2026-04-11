@@ -8,10 +8,10 @@
 
 #include <cassert>
 
-#include "fespace1d.h"
-#include "basis1d.h"
-#include "mass_matrix.h"
-#include "stiffness_matrix.h"
+#include "FEM/fespace1d.h"
+#include "FEM/basis1d.h"
+#include "FEM/mass_matrix.h"
+#include "FEM/stiffness_matrix.h"
 
 // -----------------------------------------------------------------------------
 // Description: FESpace1D constructor

@@ -10,7 +10,7 @@
 #define VEC_UT_H
 
 #include "unittest.h"
-#include "Vec.h"
+#include "Algebra/Vec.h"
 
 // -----------------------------------------------------------------------------
 // Description: Vec UTs

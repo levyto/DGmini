@@ -9,7 +9,7 @@
 #include <cassert>
 #include <cmath>
 
-#include "linalg.h"
+#include "Algebra/linalg.h"
 
 // -----------------------------------------------------------------------------
 // Description: L2 norm   ||x||_2

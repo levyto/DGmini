@@ -12,7 +12,7 @@
 #include <iomanip>
 #include <iostream>
 
-#include "output.h"
+#include "IO/output.h"
 
 // -----------------------------------------------------------------------------
 // Description: Output solution u at points x to text file

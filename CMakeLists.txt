@@ -7,16 +7,20 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(dgmini 
   source/main.cpp
-  source/basis1d.cpp
-  source/element1d.cpp
-  source/fespace1d.cpp
-  source/input.cpp
-  source/linalg.cpp
-  source/mass_matrix.cpp
-  source/mesh1d.cpp
-  source/output.cpp
-  source/quadrature1d.cpp
-  source/stiffness_matrix.cpp
+
+  source/Algebra/linalg.cpp
+
+  source/FEM/basis1d.cpp
+  source/FEM/fespace1d.cpp
+  source/FEM/mass_matrix.cpp
+  source/FEM/quadrature1d.cpp
+  source/FEM/stiffness_matrix.cpp
+
+  source/IO/input.cpp
+  source/IO/output.cpp
+
+  source/Mesh/element1d.cpp
+  source/Mesh/mesh1d.cpp
 )
 target_include_directories(dgmini PRIVATE source)
 
@@ -32,13 +36,16 @@ add_executable(dgmini_unittest
   unittest/quadrature1d_ut.cpp
   unittest/stiffness_matrix_ut.cpp
   unittest/Vec_ut.cpp
-  source/basis1d.cpp
-  source/element1d.cpp
-  source/fespace1d.cpp
-  source/linalg.cpp
-  source/mass_matrix.cpp
-  source/mesh1d.cpp
-  source/quadrature1d.cpp
-  source/stiffness_matrix.cpp
+  
+  source/Algebra/linalg.cpp
+
+  source/FEM/basis1d.cpp
+  source/FEM/fespace1d.cpp
+  source/FEM/mass_matrix.cpp
+  source/FEM/quadrature1d.cpp
+  source/FEM/stiffness_matrix.cpp
+
+  source/Mesh/element1d.cpp
+  source/Mesh/mesh1d.cpp
 )
 target_include_directories(dgmini_unittest PRIVATE source unittest)

@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "Vec.h"
-#include "mesh1d.h"
+#include "Algebra/Vec.h"
+#include "Mesh/mesh1d.h"
 
 void writeModalSolution1D(const std::string& filename,
                           const Mesh1D& mesh,

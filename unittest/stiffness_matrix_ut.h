@@ -10,7 +10,7 @@
 #define STIFFNESSMATRIX_UT_H
 
 #include "unittest.h"
-#include "stiffness_matrix.h"
+#include "FEM/stiffness_matrix.h"
 
 // -----------------------------------------------------------------------------
 // Description: Stiffness matrix UTs

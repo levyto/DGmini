@@ -9,8 +9,8 @@
 #ifndef LINALG_H
 #define LINALG_H
 
-#include "Vec.h"
-#include "Mat.h"
+#include "Algebra/Vec.h"
+#include "Algebra/Mat.h"
 
 double nrm2(const Vec& x);
 double dot(const Vec& x, const Vec& y);

@@ -10,7 +10,7 @@
 #define MESH1D_UT_H
 
 #include "unittest.h"
-#include "mesh1d.h"
+#include "Mesh/mesh1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Mesh1D UTs

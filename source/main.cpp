@@ -9,10 +9,10 @@
 
 #include <iostream>
 
-#include "mesh1d.h"
-#include "fespace1d.h"
-#include "input.h"
-#include "output.h"
+#include "FEM/fespace1d.h"
+#include "IO/input.h"
+#include "IO/output.h"
+#include "Mesh/mesh1d.h"
 
 using std::cout;
 using ModalSolution1D = std::vector<Vec>;

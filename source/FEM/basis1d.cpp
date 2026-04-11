@@ -9,7 +9,7 @@
 #include <cassert>
 #include <cmath>
 
-#include "basis1d.h"
+#include "FEM/basis1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Evaluate the Legendre basis functions and their derivatives

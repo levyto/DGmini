@@ -9,8 +9,8 @@
 #ifndef STIFFNESSMATRIX_H
 #define STIFFNESSMATRIX_H
 
-#include "quadrature1d.h"
-#include "Mat.h"
+#include "Algebra/Mat.h"
+#include "FEM/quadrature1d.h"
 
 Mat buildStiffnessMatrix1D(const Quadrature1D& quadrature, int p);
 Mat buildStiffnessMatrix1D(int p);

@@ -9,9 +9,9 @@
 #ifndef FESPACE1D_H
 #define FESPACE1D_H
 
-#include "Vec.h"
-#include "Mat.h"
-#include "quadrature1d.h"
+#include "Algebra/Vec.h"
+#include "Algebra/Mat.h"
+#include "FEM/quadrature1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Finite element space on one 1D element. This class stores all 

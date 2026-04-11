@@ -2,27 +2,38 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver
 // -----------------------------------------------------------------------------
 //
-// Description: Element geometry class
+// Description: Uniform 1D mesh class
 //
 // -----------------------------------------------------------------------------
 
 #include <cassert>
 
-#include "element1d.h"
+#include "Mesh/mesh1d.h"
 
 // -----------------------------------------------------------------------------
-// Description: Element1D constructor
+// Description: Mesh1D constructor
 // -----------------------------------------------------------------------------
-Element1D::Element1D(double x_left, double x_right)
-  : x_left_(x_left), x_right_(x_right)
+Mesh1D::Mesh1D(double x0, double x1, int Ne)
 {
-  assert(x_left < x_right);
+  assert(x0 < x1);
+  assert(Ne > 0);
+
+  const double delta_x = (x1 - x0) / Ne;
+
+  for (int i = 0; i < Ne; ++i)
+  {
+    const double xl = x0 +    i    * delta_x;
+    const double xr = x0 + (i + 1) * delta_x;
+    elements_.push_back(Element1D(xl, xr));
+  }
 }
 
+
 // -----------------------------------------------------------------------------
-// Description: Map xi in [-1,1] to physical coordinate x
+// Description: Access element by index
 // -----------------------------------------------------------------------------
-double Element1D::mapToPhysical(double xi) const
+const Element1D& Mesh1D::element(int i) const
 {
-  return 0.5 * (x_left_ + x_right_) + 0.5 * (x_right_ - x_left_) * xi;
+  assert(i >= 0 && i < Ne());
+  return elements_[i];
 }

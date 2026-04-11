@@ -10,7 +10,7 @@
 #define MAT_UT_H
 
 #include "unittest.h"
-#include "Mat.h"
+#include "Algebra/Mat.h"
 
 // -----------------------------------------------------------------------------
 // Description: Mat UTs

@@ -10,7 +10,7 @@
 #define LINALG_UT_H
 
 #include "unittest.h"
-#include "linalg.h"
+#include "Algebra/linalg.h"
 
 // -----------------------------------------------------------------------------
 // Description: linalg UTs

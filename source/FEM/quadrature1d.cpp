@@ -19,7 +19,7 @@
 #include <cassert>
 #include <cmath>
 
-#include "quadrature1d.h"
+#include "FEM/quadrature1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Constructor based on order of polynomials, which the rule will 

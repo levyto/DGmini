@@ -2,33 +2,42 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver
 // -----------------------------------------------------------------------------
 //
-// Description: Uniform 1D mesh class
+// Description: Gauss-Legendre quadrature rule on reference interval [-1,1]. 
+//
+//              This integration rule integrates polynomials of degree Q = 2n-1 
+//              exactly, where n is the number of integration points. 
+//
+//              The points and weights are hard-coded till 20 integration 
+//              points, which corresponds to polynomials of 39th degree 
+//              integrated exactly. 
+//
+//              To be more generic, one would need to compute the roots of 
+//              the Legendre polynomials and their derivatives.
 //
 // -----------------------------------------------------------------------------
 
-#ifndef MESH_H
-#define MESH_H
+#ifndef QUADRATURE1D_H
+#define QUADRATURE1D_H
 
-#include <vector>
-
-#include "element1d.h"
+#include "Algebra/Vec.h"
 
 // -----------------------------------------------------------------------------
-// Description: Uniform 1D mesh on [x0, x1]
+// Description: Gauss-Legendre quadrature on [-1,1]
 // -----------------------------------------------------------------------------
-class Mesh1D
+class Quadrature1D
 {
   public:
     // -------------------------------------------------------------------------
     // Construction
     // -------------------------------------------------------------------------
-    Mesh1D(double x0, double x1, int Ne);
+    explicit Quadrature1D(int order);
 
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
-    int Ne() const { return elements_.size(); };
-    const Element1D& element(int i) const;
+    int    nip()         const { return points_.size(); }
+    double point(int i)  const { return points_[i];     }
+    double weight(int i) const { return weights_[i];    }
 
     // -------------------------------------------------------------------------
     // Modification
@@ -37,12 +46,13 @@ class Mesh1D
     // -------------------------------------------------------------------------
     // Operations
     // -------------------------------------------------------------------------
-    
+
   private:
     // -------------------------------------------------------------------------
     // Data
     // -------------------------------------------------------------------------
-    std::vector<Element1D> elements_;
+    Vec points_;
+    Vec weights_;
 };
 
 #endif

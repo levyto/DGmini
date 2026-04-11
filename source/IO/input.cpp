@@ -8,7 +8,7 @@
 
 #include <stdexcept>
 
-#include "input.h"
+#include "IO/input.h"
 #include "PDE/linear_advection1d.h"
 #include "PDE/burgers1d.h"
 

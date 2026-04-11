@@ -10,7 +10,7 @@
 #define ELEMENT1D_UT_H
 
 #include "unittest.h"
-#include "element1d.h"
+#include "Mesh/element1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Element1D UTs

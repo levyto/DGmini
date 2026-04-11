@@ -9,7 +9,7 @@
 #ifndef BASIS1D_H
 #define BASIS1D_H
 
-#include "Vec.h"
+#include "Algebra/Vec.h"
 
 void evaluateLegendreBasis(int p, double xi, Vec& P, Vec& dP);
 

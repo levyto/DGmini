@@ -10,7 +10,7 @@
 #define QUADRATURE1D_UT_H
 
 #include "unittest.h"
-#include "quadrature1d.h"
+#include "FEM/quadrature1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Quadrature1D UTs

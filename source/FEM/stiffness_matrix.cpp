@@ -8,8 +8,8 @@
 
 #include <cassert>
 
-#include "stiffness_matrix.h"
-#include "basis1d.h"
+#include "FEM/stiffness_matrix.h"
+#include "FEM/basis1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Build local stiffness matrix on one 1D element assuming the order 

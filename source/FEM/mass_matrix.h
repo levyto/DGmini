@@ -9,9 +9,9 @@
 #ifndef MASSMATRIX_H
 #define MASSMATRIX_H
 
-#include "element1d.h"
-#include "quadrature1d.h"
-#include "Mat.h"
+#include "Algebra/Mat.h"
+#include "FEM/quadrature1d.h"
+#include "Mesh/element1d.h"
 
 Mat buildMassMatrix1D(const Quadrature1D& quadrature, int p);
 Mat buildMassMatrix1D(int p);

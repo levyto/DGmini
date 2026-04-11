@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "fespace1d_ut.h"
-#include "quadrature1d.h"
+#include "FEM/quadrature1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Check  P(1) == 1,         P(-1) == (-1)^n,

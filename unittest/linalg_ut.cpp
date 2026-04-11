@@ -7,8 +7,8 @@
 // -----------------------------------------------------------------------------
 
 #include "linalg_ut.h"
-#include "Vec.h"
-#include "Mat.h"
+#include "Algebra/Vec.h"
+#include "Algebra/Mat.h"
 
 // -----------------------------------------------------------------------------
 // Description: (Vec) L2 norm test

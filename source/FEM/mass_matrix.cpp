@@ -8,8 +8,8 @@
 
 #include <cassert>
 
-#include "mass_matrix.h"
-#include "basis1d.h"
+#include "FEM/mass_matrix.h"
+#include "FEM/basis1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Build local mass matrix on reference 1D element assuming the 

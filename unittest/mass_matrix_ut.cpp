@@ -9,8 +9,8 @@
 #include <sstream>
 
 #include "mass_matrix_ut.h"
-#include "quadrature1d.h"
-#include "linalg.h"
+#include "FEM/quadrature1d.h"
+#include "Algebra/linalg.h"
 
 // -----------------------------------------------------------------------------
 // Description: Check if numerically integrated mass matrix using quadrature 

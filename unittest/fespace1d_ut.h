@@ -10,7 +10,7 @@
 #define FESPACE1D_UT_H
 
 #include "unittest.h"
-#include "fespace1d.h"
+#include "FEM/fespace1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: FESpace1D UTs

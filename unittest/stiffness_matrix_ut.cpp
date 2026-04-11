@@ -9,7 +9,7 @@
 #include <sstream>
 
 #include "stiffness_matrix_ut.h"
-#include "quadrature1d.h"
+#include "FEM/quadrature1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Check if numerically integrated stiffness matrix using quadrature 

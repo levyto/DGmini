@@ -10,7 +10,7 @@
 #define BASIS1D_UT_H
 
 #include "unittest.h"
-#include "basis1d.h"
+#include "FEM/basis1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Basis1D UTs

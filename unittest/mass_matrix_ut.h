@@ -10,7 +10,7 @@
 #define MASSMATRIX_UT_H
 
 #include "unittest.h"
-#include "mass_matrix.h"
+#include "FEM/mass_matrix.h"
 
 // -----------------------------------------------------------------------------
 // Description: Mass matrix UTs
