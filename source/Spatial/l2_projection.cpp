@@ -10,7 +10,6 @@
 #include <cassert>
 
 #include "Spatial/l2_projection.h"
-#include "FEM/basis1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: L2 projection of a prescribed function u0 onto the space of 
@@ -47,11 +46,9 @@ void L2ProjectionOnElement(const FESpace1D& fe,
 
     const double u0_val = u0(x);
 
-    evaluateLegendreBasis(fe.order(), xi, phi, dphi);
-
     for (int i = 0; i < ndof; ++i)
     {
-      b[i] += w * u0_val * phi[i] * J;
+      b[i] += w * u0_val * fe.phi(q, i) * J;
     }
   }
 

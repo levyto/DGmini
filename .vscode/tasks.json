@@ -38,7 +38,7 @@
     {
       "label": "Count code lines",
       "type": "shell",
-      "command": "wc -l source/*.cpp source/*.h unittest/*.cpp unittest/*.h",
+      "command": "find source unittest -type f \\( -name \"*.cpp\" -o -name \"*.h\" \\) -exec wc -l {} +",
       "problemMatcher": []
     }
   ]
