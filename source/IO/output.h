@@ -14,10 +14,11 @@
 
 #include "Algebra/Vec.h"
 #include "Mesh/mesh1d.h"
+#include "Spatial/modal_vector.h"
 
 void writeModalSolution1D(const std::string& filename,
                           const Mesh1D& mesh,
-                          const std::vector<Vec>& coefficients);
+                          const ModalVector& u);
 
 void writeSolution1D(const std::string& filename,
                      const Vec& x, 

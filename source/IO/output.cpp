@@ -50,16 +50,11 @@ void writeSolution1D(const std::string& filename, const Vec& x, const Vec& u)
 // -----------------------------------------------------------------------------
 void writeModalSolution1D(const std::string& filename,
                           const Mesh1D& mesh,
-                          const std::vector<Vec>& coefficients)
+                          const ModalVector& u)
 {
-  assert(static_cast<int>(coefficients.size()) == mesh.Ne());
+  assert(static_cast<int>(u.Ne()) == mesh.Ne());
 
-  const int n_coeffs = coefficients[0].size();
-
-  for (int e = 0; e < mesh.Ne(); ++e)
-  {
-    assert(coefficients[e].size() == n_coeffs);
-  }
+  const int n_coeffs = u.localDoFs();
 
   std::filesystem::create_directories("output");
   std::ofstream out("output/" + filename);
@@ -84,7 +79,7 @@ void writeModalSolution1D(const std::string& filename,
         << element.right();
 
     for (int j = 0; j < n_coeffs; ++j)
-      out << "\t" << coefficients[e][j];
+      out << "\t" << u(e,j);
 
     out << "\n";
   }

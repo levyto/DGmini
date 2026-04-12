@@ -15,9 +15,9 @@
 #include "IO/output.h"
 #include "Mesh/mesh1d.h"
 #include "Spatial/l2_projection.h"
+#include "Spatial/modal_vector.h"
 
 using std::cout;
-using ModalSolution1D = std::vector<Vec>;
 
 int main()
 {
@@ -32,10 +32,11 @@ int main()
   const double x1 = 6.283185307179586; // 2*pi
   const int p = 2;
 
-  FESpace1D fe(p);
-  Mesh1D mesh(x0, x1, Ne);
+  FESpace1D   fe(p);
 
-  ModalSolution1D sol(mesh.Ne(), Vec(fe.DoFs()));
+  Mesh1D      mesh(x0, x1, Ne);
+  
+  ModalVector sol(mesh.Ne(), fe.DoFs());
 
   for (int e = 0; e < mesh.Ne(); ++e)
   {
@@ -49,7 +50,7 @@ int main()
 
   for (int e = 0; e < mesh.Ne(); e++)
   {
-    L2ProjectionOnElement(fe, mesh.element(e), u0, sol[e]);
+    L2ProjectionOnElement(fe, mesh.element(e), u0, sol.elementPtr(e));
   }
   
 

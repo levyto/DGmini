@@ -22,6 +22,7 @@
 #include "pde_ut.h"
 #include "numerical_flux_ut.h"
 #include "l2_projection_ut.h"
+#include "modal_vector_ut.h"
 
 int main()
 {
@@ -40,6 +41,7 @@ int main()
   Register_Test_PDE(registry);
   Register_Test_NumericalFlux(registry);
   Register_Test_L2Projection(registry);
+  Register_Test_ModalVector(registry);
 
 
   registry.run_all();

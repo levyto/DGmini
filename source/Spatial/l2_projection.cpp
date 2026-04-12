@@ -24,11 +24,11 @@
 void L2ProjectionOnElement(const FESpace1D& fe, 
                            const Element1D& el,
                            std::function<double(double)> u0,
-                           Vec& u_e)
+                           double* u_e)
 {
   const int ndof = fe.DoFs();
 
-  assert(u_e.size() == ndof);
+  assert(u_e != nullptr);
 
   Vec phi(ndof);
   Vec dphi(ndof);
@@ -57,4 +57,17 @@ void L2ProjectionOnElement(const FESpace1D& fe,
   {
     u_e[i] = b[i] / ( fe.massMatrix()(i, i) * J );
   }
+}
+
+// -----------------------------------------------------------------------------
+// Description: Wrapper for Vec& u_e
+// -----------------------------------------------------------------------------
+void L2ProjectionOnElement(const FESpace1D& fe, 
+                           const Element1D& element,
+                           std::function<double(double)> u0,
+                           Vec& u_e)
+{
+  assert(u_e.size() == fe.DoFs());
+
+  L2ProjectionOnElement(fe, element, u0, &u_e[0]);
 }

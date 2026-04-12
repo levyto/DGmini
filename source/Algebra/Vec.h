@@ -27,7 +27,7 @@ class Vec
     // -------------------------------------------------------------------------
     int size() const { return data_.size(); }
     
-    double operator[](int i) const
+    const double& operator[](int i) const
     {
       assert(i >= 0 && i < size());
       return data_[i];
