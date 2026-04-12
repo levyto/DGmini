@@ -23,6 +23,7 @@ add_executable(dgmini
   source/Mesh/mesh1d.cpp
 
   source/Spatial/l2_projection.cpp
+  source/Spatial/residual.cpp
 )
 target_include_directories(dgmini PRIVATE source)
 
@@ -40,6 +41,7 @@ add_executable(dgmini_unittest
   unittest/numerical_flux_ut.cpp
   unittest/pde_ut.cpp
   unittest/quadrature1d_ut.cpp
+  unittest/residual_ut.cpp
   unittest/stiffness_matrix_ut.cpp
   unittest/Vec_ut.cpp
   
@@ -55,5 +57,6 @@ add_executable(dgmini_unittest
   source/Mesh/mesh1d.cpp
 
   source/Spatial/l2_projection.cpp
+  source/Spatial/residual.cpp
 )
 target_include_directories(dgmini_unittest PRIVATE source unittest)

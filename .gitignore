@@ -1,5 +1,6 @@
 build/
 output/
+scripts/__pycache__/
 .vscode/*
 !.vscode/launch.json
 !.vscode/tasks.json
