@@ -21,16 +21,19 @@
 //              Note that the mass matrix is diagonal for Legendre basis 
 //              functions, which simplifies the solution of the linear system.
 // -----------------------------------------------------------------------------
-void residual(const FESpace1D& fe,
-              const Mesh1D& mesh,
-              const PDE& pde,
-              const NumericalFlux& flux,
-              const ModalVector& u,
-              ModalVector& rhs)
+void residual
+(
+  const FESpace1D& fe,
+  const Mesh1D& mesh,
+  const PDE& pde,
+  const NumericalFlux& flux,
+  const ModalVector& solution,
+  ModalVector& rhs
+)
 {
-  assert(u.Ne() == mesh.Ne());
+  assert(solution.Ne() == mesh.Ne());
   assert(rhs.Ne() == mesh.Ne());
-  assert(u.localDoFs() == fe.DoFs());
+  assert(solution.localDoFs() == fe.DoFs());
   assert(rhs.localDoFs() == fe.DoFs());
 
   const int Ne = mesh.Ne();
@@ -44,7 +47,7 @@ void residual(const FESpace1D& fe,
     const Element1D& element = mesh.element(e);
     const double J = element.jacobian();
 
-    const double* u_e = u.elementPtr(e);
+    const double* u_e = solution.elementPtr(e);
     double* rhs_e = rhs.elementPtr(e);
 
     // -------------------------------------------------------------------------
@@ -93,8 +96,8 @@ void residual(const FESpace1D& fe,
     const int eL = (e == 0) ? (Ne - 1) : (e - 1);
     const int eR = (e == Ne - 1) ? 0 : (e + 1);
 
-    const double* u_em1 = u.elementPtr(eL);
-    const double* u_ep1 = u.elementPtr(eR);
+    const double* u_em1 = solution.elementPtr(eL);
+    const double* u_ep1 = solution.elementPtr(eR);
 
     for (int j = 0; j < ndof; ++j)
     {

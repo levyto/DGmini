@@ -21,6 +21,7 @@
 #include "Spatial/modal_vector.h"
 #include "Spatial/numerical_flux.h"
 #include "Spatial/residual.h"
+#include "Temporal/time_integrator.h"
 
 using std::cout;
 
@@ -45,6 +46,12 @@ int main()
 
   auto pde = createPDE("linear_advection1d");
   auto flux = createNumericalFlux("rusanov");
+
+  // auto integrator = createTimeIntegrator("forward_euler");
+  // auto integrator = createTimeIntegrator("runge_kutta_2");
+  auto integrator = createTimeIntegrator("runge_kutta_3_ssp");
+  // auto integrator = createTimeIntegrator("runge_kutta_2");
+  integrator->initialize(mesh, fe);
 
   // ---------------------------------------------------------------------------
   // Solution vectors
@@ -80,10 +87,7 @@ int main()
 
   while (time < final_time)
   {
-    residual(fe, mesh, *pde, *flux, sol, rhs);
-
-    sol.axpy(dt, rhs);    // u^{n+1} = u^n + dt * rhs
-
+    integrator->doTimeStep(fe, mesh, *pde, *flux, dt, sol);
     time += dt;
     step++;
 

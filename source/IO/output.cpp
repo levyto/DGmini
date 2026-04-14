@@ -68,7 +68,7 @@ void writeModalSolution1D
 
   if (verbose)
   {
-    std::cout << "\nModal solution written to " << filename << "\n\n";
+    std::cout << "\nModal solution written to " << filename;
   }
 }
 

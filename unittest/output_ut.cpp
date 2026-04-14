@@ -22,6 +22,9 @@
 // -----------------------------------------------------------------------------
 namespace
 {
+  // ---------------------------------------------------------------------------
+  // Description: Read all lines from a text file into a vector of strings
+  // ---------------------------------------------------------------------------
   std::vector<std::string> readAllLines(const std::string& filename)
   {
     std::ifstream in(filename);
@@ -41,11 +44,17 @@ namespace
     return lines;
   }
 
+  // ---------------------------------------------------------------------------
+  // Description: Check if a file exists
+  // ---------------------------------------------------------------------------
   bool fileExists(const std::string& filename)
   {
     return std::filesystem::exists(filename);
   }
 
+  // ---------------------------------------------------------------------------
+  // Description: Remove a file if it exists
+  // ---------------------------------------------------------------------------
   void removeFileIfExists(const std::string& filename)
   {
     if (std::filesystem::exists(filename))
@@ -54,6 +63,9 @@ namespace
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // Description: Remove a directory if it exists
+  // ---------------------------------------------------------------------------
   void removeDirectoryIfExists(const std::string& dirname)
   {
     if (std::filesystem::exists(dirname))

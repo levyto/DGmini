@@ -13,8 +13,10 @@
 
 #include "PDE/pde.h"
 #include "Spatial/numerical_flux.h"
+#include "Temporal/time_integrator.h"
 
 std::unique_ptr<PDE> createPDE(const std::string& name);
 std::unique_ptr<NumericalFlux> createNumericalFlux(const std::string& name);
+std::unique_ptr<TimeIntegrator> createTimeIntegrator(const std::string& name);
 
 #endif

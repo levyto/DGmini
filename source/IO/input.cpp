@@ -13,7 +13,11 @@
 #include "PDE/burgers1d.h"
 #include "Spatial/lax_friedrichs_flux.h"
 #include "Spatial/rusanov_flux.h"
-
+#include "Temporal/forward_euler.h"
+#include "Temporal/runge_kutta_2.h"
+#include "Temporal/runge_kutta_3_ssp.h"
+#include "Temporal/runge_kutta_4.h"
+  
 // -----------------------------------------------------------------------------
 // Description: Create a PDE instance based on its name
 // -----------------------------------------------------------------------------
@@ -40,4 +44,24 @@ std::unique_ptr<NumericalFlux> createNumericalFlux(const std::string& name)
     return std::make_unique<RusanovFlux>();
 
   throw std::runtime_error("Unknown numerical flux: " + name);
+}
+
+// -----------------------------------------------------------------------------
+// Description: Create a TimeIntegrator instance based on its name
+// -----------------------------------------------------------------------------
+std::unique_ptr<TimeIntegrator> createTimeIntegrator(const std::string& name)
+{
+  if (name == "forward_euler")
+    return std::make_unique<ForwardEuler>();
+
+  if (name == "runge_kutta_2")
+    return std::make_unique<RungeKutta2>();
+
+  if (name == "runge_kutta_3_ssp")
+    return std::make_unique<RungeKutta3SSP>();
+
+  if (name == "runge_kutta_4")
+    return std::make_unique<RungeKutta4>();
+
+  throw std::runtime_error("Unknown time integrator: " + name);
 }

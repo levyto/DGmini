@@ -15,11 +15,14 @@
 #include "Spatial/modal_vector.h"
 #include "Spatial/numerical_flux.h"
 
-void residual(const FESpace1D& fe,
-              const Mesh1D& mesh,
-              const PDE& pde,
-              const NumericalFlux& flux,
-              const ModalVector& u,
-              ModalVector& rhs);
+void residual
+(
+  const FESpace1D& fe,
+  const Mesh1D& mesh,
+  const PDE& pde,
+  const NumericalFlux& flux,
+  const ModalVector& solution,
+  ModalVector& rhs
+);
 
 #endif
