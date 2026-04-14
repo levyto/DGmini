@@ -22,6 +22,7 @@
 #include "Spatial/numerical_flux.h"
 #include "Spatial/residual.h"
 #include "Temporal/time_integrator.h"
+#include "Temporal/time_step_controller.h"
 
 using std::cout;
 
@@ -47,11 +48,14 @@ int main()
   auto pde = createPDE("linear_advection1d");
   auto flux = createNumericalFlux("rusanov");
 
-  // auto integrator = createTimeIntegrator("forward_euler");
+  auto integrator = createTimeIntegrator("forward_euler");
   // auto integrator = createTimeIntegrator("runge_kutta_2");
-  auto integrator = createTimeIntegrator("runge_kutta_3_ssp");
+  // auto integrator = createTimeIntegrator("runge_kutta_3_ssp");
   // auto integrator = createTimeIntegrator("runge_kutta_2");
   integrator->initialize(mesh, fe);
+
+  // auto dt_controller = createTimeStepController("cfl_time_step", 0.53);
+  auto dt_controller = createTimeStepController("cfl_time_step", 0.45);
 
   // ---------------------------------------------------------------------------
   // Solution vectors
@@ -87,7 +91,10 @@ int main()
 
   while (time < final_time)
   {
+    double dt = dt_controller->computeTimeStep(fe, mesh, *pde, sol);
+    
     integrator->doTimeStep(fe, mesh, *pde, *flux, dt, sol);
+
     time += dt;
     step++;
 

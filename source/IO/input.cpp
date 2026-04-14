@@ -17,6 +17,8 @@
 #include "Temporal/runge_kutta_2.h"
 #include "Temporal/runge_kutta_3_ssp.h"
 #include "Temporal/runge_kutta_4.h"
+#include "Temporal/fixed_time_step.h"
+#include "Temporal/cfl_time_step.h"
   
 // -----------------------------------------------------------------------------
 // Description: Create a PDE instance based on its name
@@ -64,4 +66,18 @@ std::unique_ptr<TimeIntegrator> createTimeIntegrator(const std::string& name)
     return std::make_unique<RungeKutta4>();
 
   throw std::runtime_error("Unknown time integrator: " + name);
+}
+
+// -----------------------------------------------------------------------------
+// Description: Create a TimeStepController instance based on its name
+// -----------------------------------------------------------------------------
+std::unique_ptr<TimeStepController> createTimeStepController(const std::string& name, double value)
+{
+  if (name == "fixed_time_step")
+    return std::make_unique<FixedTimeStep>(value);
+
+  if (name == "cfl_time_step")
+    return std::make_unique<CFLTimeStep>(value);
+
+  throw std::runtime_error("Unknown time step controller: " + name);
 }
