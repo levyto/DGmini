@@ -23,7 +23,8 @@ from numpy.polynomial.legendre import legval
 from modal_solution_io import (
     read_modal_solution,
     reconstruct_on_element,
-    reconstruct_global_solution
+    reconstruct_global_solution,
+    read_time
 )
 
 def frame_sort_key(path: Path) -> tuple[int, str]:
@@ -139,6 +140,7 @@ def main() -> None:
 
     files = collect_solution_files(args.pattern)
     x_frames, u_frames, interfaces = load_all_frames(files, args.points_per_element)
+    times = [read_time(f) for f in files]
 
     x_min = np.min(x_frames[0])
     x_max = np.max(x_frames[0])
@@ -157,18 +159,18 @@ def main() -> None:
         for xb in interfaces:
             ax.axvline(x=xb, color="blue", linewidth=0.8)
 
-    title = ax.set_title("")
+    title = ax.set_title(f"t = {times[0]:.4f}")
 
     def init():
         line.set_data([], [])
-        title.set_text("")
+        title.set_text(f"t = {times[0]:.4f}")
         return line, title
 
     def update(frame_idx: int):
         x = x_frames[frame_idx]
         u = u_frames[frame_idx]
         line.set_data(x, u)
-        title.set_text(files[frame_idx].name)
+        title.set_text(f"t = {times[frame_idx]:.4f}")
         return line, title
 
     interval_ms = 1000.0 / args.fps
@@ -179,7 +181,7 @@ def main() -> None:
         frames=len(files),
         init_func=init,
         interval=interval_ms,
-        blit=True,
+        blit=False,
         repeat=True,
     )
 

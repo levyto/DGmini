@@ -39,6 +39,7 @@ add_executable(dgmini_unittest
   unittest/mesh1d_ut.cpp
   unittest/modal_vector_ut.cpp
   unittest/numerical_flux_ut.cpp
+  unittest/output_ut.cpp
   unittest/pde_ut.cpp
   unittest/quadrature1d_ut.cpp
   unittest/residual_ut.cpp
@@ -52,6 +53,8 @@ add_executable(dgmini_unittest
   source/FEM/mass_matrix.cpp
   source/FEM/quadrature1d.cpp
   source/FEM/stiffness_matrix.cpp
+
+  source/IO/output.cpp
 
   source/Mesh/element1d.cpp
   source/Mesh/mesh1d.cpp

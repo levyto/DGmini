@@ -96,3 +96,14 @@ def reconstruct_global_solution(
         u_all.append(u_e)
 
     return np.concatenate(x_all), np.concatenate(u_all)
+
+def read_time(filename: str) -> float:
+    """
+    Read the time from a DGmini output file
+    """
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f:
+            if line.startswith("# time"):
+                return float(line.split()[2])
+
+    raise ValueError(f"Time not found in file: {filename}")

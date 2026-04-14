@@ -24,6 +24,7 @@
 #include "l2_projection_ut.h"
 #include "modal_vector_ut.h"
 #include "residual_ut.h"
+#include "output_ut.h"
 
 int main()
 {
@@ -44,6 +45,7 @@ int main()
   Register_Test_L2Projection(registry);
   Register_Test_ModalVector(registry);
   Register_Test_residual(registry);
+  Register_Test_output(registry);
 
 
   registry.run_all();

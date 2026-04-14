@@ -49,8 +49,13 @@ int main()
   // ---------------------------------------------------------------------------
   // Solution vectors
   // ---------------------------------------------------------------------------
-  ModalVector u(mesh.Ne(), fe.DoFs());
+  ModalVector sol(mesh.Ne(), fe.DoFs());
   ModalVector rhs(mesh.Ne(), fe.DoFs());
+
+  // ---------------------------------------------------------------------------
+  // Output
+  // ---------------------------------------------------------------------------
+  TimeSeriesWriter output("output", "solution", 0.01);
 
   // ---------------------------------------------------------------------------
   // Initial condition
@@ -62,12 +67,10 @@ int main()
 
   for (int e = 0; e < mesh.Ne(); ++e)
   {
-    L2ProjectionOnElement(fe, mesh.element(e), u0, u.elementPtr(e));
+    L2ProjectionOnElement(fe, mesh.element(e), u0, sol.elementPtr(e));
   }
 
-  // Write initial modal solution
-  writeModalSolution1D("solution_0000.dat", mesh, u);
-  int output_id = 1;
+  output.write(mesh, sol, 0.0);
 
   // ---------------------------------------------------------------------------
   // Time integration: explicit Euler
@@ -77,29 +80,19 @@ int main()
 
   while (time < final_time)
   {
-    residual(fe, mesh, *pde, *flux, u, rhs);
+    residual(fe, mesh, *pde, *flux, sol, rhs);
 
-    // u^{n+1} = u^n + dt * rhs
-    u.axpy(dt, rhs);
-
-    if (step % 5 == 0)
-    {
-      std::ostringstream name;
-      name << "solution_" << std::setw(4) << std::setfill('0') << output_id << ".dat";
-      writeModalSolution1D(name.str(), mesh, u);
-      ++output_id;
-    }
+    sol.axpy(dt, rhs);    // u^{n+1} = u^n + dt * rhs
 
     time += dt;
-    ++step;
+    step++;
+
+    output.write(mesh, sol, time);
   }
 
-  // ---------------------------------------------------------------------------
-  // Output
-  // ---------------------------------------------------------------------------
-  writeModalSolution1D("solution_final.dat", mesh, u);
+  output.writeFinal(mesh, sol, time);
 
-  std::cout << "Finished at t = " << time
+  std::cout << "\n\nFinished at t = " << time
             << " after " << step << " steps.\n";
 
   return 0;
