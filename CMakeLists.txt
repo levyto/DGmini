@@ -45,6 +45,7 @@ add_executable(dgmini_unittest
   unittest/residual_ut.cpp
   unittest/stiffness_matrix_ut.cpp
   unittest/time_integrator_ut.cpp
+  unittest/time_step_controller_ut.cpp
   unittest/Vec_ut.cpp
   
   source/Algebra/linalg.cpp
