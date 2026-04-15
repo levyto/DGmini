@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------------
 
 #include <cassert>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -38,6 +39,7 @@ void writeModalSolution1D
 
   const int n_coeffs = solution.localDoFs();
 
+  std::filesystem::create_directories("output");
   std::ofstream out(filename);
   assert(out.is_open());
 
@@ -86,6 +88,7 @@ void writeSolution1D
 {
   assert(x.size() == solution.size());
 
+  std::filesystem::create_directories("output");
   std::ofstream out(filename);
   assert(out.is_open());
 
