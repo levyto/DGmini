@@ -62,12 +62,4 @@ void Test_FESpace1D_constructor()
     sum += fe.inverseMassMatrix()(0, j);
   }
   Check(sum > 0.0, "mass matrix inverse seems uninitialized");
-
-  // Init. of stiffness matrix by summing first column (sanity, not full validation)
-  sum = 0.0;
-  for (int i = 0; i <= p; ++i)
-  {
-    sum += fe.stiffnessMatrix()(i, 0);
-  }
-  Check(sum > 0.0, "stiffness matrix inverse seems uninitialized");
 }

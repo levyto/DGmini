@@ -11,7 +11,6 @@
 #include "FEM/fespace1d.h"
 #include "FEM/basis1d.h"
 #include "FEM/mass_matrix.h"
-#include "FEM/stiffness_matrix.h"
 
 // -----------------------------------------------------------------------------
 // Description: FESpace1D constructor
@@ -24,8 +23,7 @@ FESpace1D::FESpace1D(int p)
     phi_left_(p + 1),
     phi_right_(p + 1),
     M_(buildMassMatrix1D(quadrature_, p)),
-    M_inv_(buildMassMatrix1DInverse(p)),
-    K_(buildStiffnessMatrix1D(p))
+    M_inv_(buildMassMatrix1DInverse(p))
 {
   assert(p >= 0);
   

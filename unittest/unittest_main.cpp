@@ -17,7 +17,6 @@
 #include "basis1d_ut.h"
 #include "Mat_ut.h"
 #include "mass_matrix_ut.h"
-#include "stiffness_matrix_ut.h"
 #include "fespace1d_ut.h"
 #include "pde_ut.h"
 #include "numerical_flux_ut.h"
@@ -41,7 +40,6 @@ int main()
   Register_Test_basis1D(registry);
   Register_Test_Mat(registry);
   Register_Test_massMatrix1D(registry);
-  Register_Test_stiffnessMatrix1D(registry);
   Register_Test_FESpace1D(registry);
   Register_Test_PDE(registry);
   Register_Test_NumericalFlux(registry);

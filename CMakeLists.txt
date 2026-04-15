@@ -14,7 +14,6 @@ add_executable(dgmini
   source/FEM/fespace1d.cpp
   source/FEM/mass_matrix.cpp
   source/FEM/quadrature1d.cpp
-  source/FEM/stiffness_matrix.cpp
 
   source/IO/input.cpp
   source/IO/output.cpp
@@ -46,7 +45,6 @@ add_executable(dgmini_unittest
   unittest/pde_ut.cpp
   unittest/quadrature1d_ut.cpp
   unittest/residual_ut.cpp
-  unittest/stiffness_matrix_ut.cpp
   unittest/time_integrator_ut.cpp
   unittest/time_step_controller_ut.cpp
   unittest/Vec_ut.cpp
@@ -57,7 +55,6 @@ add_executable(dgmini_unittest
   source/FEM/fespace1d.cpp
   source/FEM/mass_matrix.cpp
   source/FEM/quadrature1d.cpp
-  source/FEM/stiffness_matrix.cpp
 
   source/IO/output.cpp
 

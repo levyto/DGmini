@@ -15,8 +15,8 @@
 
 // -----------------------------------------------------------------------------
 // Description: Finite element space on one 1D element. This class stores all 
-//              the info about the basis functions, quadrature and mass 
-//              and stiffness matrices on reference element. 
+//              the info about the basis functions, quadrature and mass matrix 
+//on reference element. 
 // -----------------------------------------------------------------------------
 class FESpace1D
 {
@@ -51,10 +51,9 @@ class FESpace1D
     // Quadrature rule on reference element
     const Quadrature1D& quadrature() const { return quadrature_; }
     
-    // Mass and stiffness matrices on reference element
+    // Mass matrix on reference element
     const Mat& massMatrix()          const { return M_;          }
     const Mat& inverseMassMatrix()   const { return M_inv_;      }
-    const Mat& stiffnessMatrix()     const { return K_;          }
 
     // -------------------------------------------------------------------------
     // Modification
@@ -79,7 +78,6 @@ class FESpace1D
     Mat dphi_q_;
     Mat M_;
     Mat M_inv_;
-    Mat K_;
 };
 
 #endif
