@@ -12,8 +12,8 @@
 #include "FEM/fespace1d.h"
 #include "Spatial/modal_vector.h"
 #include "Mesh/mesh1d.h"
-#include "Temporal/fixed_time_step.h"
-#include "Temporal/cfl_time_step.h"
+#include "Temporal/TimeStepController/fixed_time_step.h"
+#include "Temporal/TimeStepController/cfl_time_step.h"
 #include "PDE/linear_advection1d.h"
 
 // -----------------------------------------------------------------------------

@@ -2,42 +2,50 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver
 // -----------------------------------------------------------------------------
 //
-// Description: Class for Forward Euler time integrator
+// Description: Abstract TimeIntegrator class, intended to be used as a base 
+//              class for specific time integrators (e.g. Forward Euler, SSPRK,
+//              etc.) and to be extended
 //
-//              u^{n+1} = u^n + dt * R(u^n)
-//  
-//              where R is the residual of the spatial discretization
 // -----------------------------------------------------------------------------
 
-#ifndef FORWARD_EULER_H
-#define FORWARD_EULER_H
+#ifndef TIME_INTEGRATOR_H
+#define TIME_INTEGRATOR_H
 
-#include <algorithm>
+#include "FEM/fespace1d.h"
+#include "Mesh/mesh1d.h"
+#include "PDE/pde.h"
+#include "Spatial/modal_vector.h"
+#include "Spatial/NumericalFlux/numerical_flux.h"
 
-#include "Temporal/time_integrator.h"
-#include "Spatial/residual.h"
-
-class ForwardEuler : public TimeIntegrator
+class TimeIntegrator
 {
   public:
     // -------------------------------------------------------------------------
     // Construction
     // -------------------------------------------------------------------------
-    ForwardEuler() = default;
+    TimeIntegrator() = default;
+    virtual ~TimeIntegrator() = default;
 
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
-    double recommendedCFL() const override { return 0.5; }
-    
+    virtual double recommendedCFL() const = 0; // Empirical value for stability
+
     // -------------------------------------------------------------------------
     // Modification
     // -------------------------------------------------------------------------
+    virtual void initialize(const Mesh1D& mesh, const FESpace1D& fe)
+    {
+      solution_1_ = ModalVector(mesh.Ne(), fe.DoFs());
+      solution_2_ = ModalVector(mesh.Ne(), fe.DoFs());
+      rhs_        = ModalVector(mesh.Ne(), fe.DoFs());
+      is_initialized_ = true;
+    }
 
     // -------------------------------------------------------------------------
     // Operations
     // -------------------------------------------------------------------------
-    void doTimeStep
+    virtual void doTimeStep
     (
       const FESpace1D& fe,
       const Mesh1D& mesh,
@@ -45,14 +53,17 @@ class ForwardEuler : public TimeIntegrator
       const NumericalFlux& flux,
       double dt,
       ModalVector& solution
-    ) override
-    {
-      assert(is_initialized_);
+    ) = 0;
 
-      residual(fe, mesh, pde, flux, solution, rhs_);
-      solution.axpy(dt, rhs_);
-    }
-  
+  protected:
+    // -------------------------------------------------------------------------
+    // Data
+    // -------------------------------------------------------------------------
+    ModalVector solution_1_;
+    ModalVector solution_2_;
+    ModalVector rhs_;
+    bool is_initialized_ = false;
+
   private:
     // -------------------------------------------------------------------------
     // Data

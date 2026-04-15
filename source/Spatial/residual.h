@@ -13,7 +13,7 @@
 #include "Mesh/mesh1d.h"
 #include "PDE/pde.h"
 #include "Spatial/modal_vector.h"
-#include "Spatial/numerical_flux.h"
+#include "Spatial/NumericalFlux/numerical_flux.h"
 
 void residual
 (

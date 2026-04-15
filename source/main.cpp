@@ -19,13 +19,12 @@
 #include "PDE/pde.h"
 #include "Spatial/l2_projection.h"
 #include "Spatial/modal_vector.h"
-#include "Spatial/numerical_flux.h"
+#include "Spatial/NumericalFlux/numerical_flux.h"
 #include "Spatial/residual.h"
-#include "Temporal/time_integrator.h"
-#include "Temporal/time_step_controller.h"
+#include "Temporal/TimeIntegrator/time_integrator.h"
+#include "Temporal/TimeStepController/time_step_controller.h"
 #include "Temporal/cfl_number.h"
-
-using std::cout;
+#include "Temporal/TimeStepController/fixed_time_step.h"
 
 int main()
 {
@@ -36,9 +35,7 @@ int main()
   const int n_elements = 20;
   const double x_left = 0.0;
   const double x_right = 1.0;
-
   const double final_time = 1.0;
-  const double dt = 1.0e-3;
 
   // ---------------------------------------------------------------------------
   // Initialization
@@ -55,11 +52,11 @@ int main()
   // auto integrator = createTimeIntegrator("runge_kutta_2");
   integrator->initialize(mesh, fe);
 
-  auto dt_controller = createTimeStepController("cfl_time_step", 0.53);
+  // auto dt_controller = createTimeStepController("cfl_time_step", 0.53);
   // auto dt_controller = createTimeStepController("cfl_time_step", 0.45);
+  auto dt_controller = createTimeStepController("fixed_time_step", 0.45);
 
   ModalVector sol(mesh.Ne(), fe.DoFs());
-  ModalVector rhs(mesh.Ne(), fe.DoFs());
 
   TimeSeriesWriter output("output", "solution", 0.01);
 
@@ -76,24 +73,31 @@ int main()
 
   output.write(mesh, sol, 0.0);
 
+  // Check CFL number for fixed time step size
+  if (auto* fixed = dynamic_cast<FixedTimeStep*>(dt_controller.get()))
+  {
+    const double dt = fixed->getTimeStep();
+    const double effective_cfl = computeEffectiveCFL(fe, mesh, *pde, sol, dt);
+
+    if (effective_cfl > integrator->recommendedCFL())
+    {
+      std::cout << "\n\nWARNING: Current CFL = " << effective_cfl
+                << ", recommended is "           << integrator->recommendedCFL()
+                << "\n";
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // Run
   // ---------------------------------------------------------------------------
+  double dt = 0.0;
   double time = 0.0;
   int step = 0;
 
   while (time < final_time)
   {
-    double dt = dt_controller->computeTimeStep(fe, mesh, *pde, sol);
-    
-    const double effective_cfl = computeEffectiveCFL(fe, mesh, *pde, sol, dt);
-    if (effective_cfl > integrator->recommendedCFL())
-    {
-      std::cout << "\nWarning: current CFL = " << effective_cfl
-                << " exceeds recommended value "
-                << integrator->recommendedCFL()
-                << " for selected time integrator.";
-    }
+    dt = dt_controller->computeTimeStep(fe, mesh, *pde, sol);
+    dt = std::min(dt, final_time - time);
 
     integrator->doTimeStep(fe, mesh, *pde, *flux, dt, sol);
 

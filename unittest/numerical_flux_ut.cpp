@@ -9,8 +9,8 @@
 #include <cmath>
 
 #include "pde_ut.h"
-#include "Spatial/lax_friedrichs_flux.h"
-#include "Spatial/rusanov_flux.h"
+#include "Spatial/NumericalFlux/lax_friedrichs.h"
+#include "Spatial/NumericalFlux/rusanov.h"
 #include "PDE/linear_advection1d.h"
 
 // -----------------------------------------------------------------------------

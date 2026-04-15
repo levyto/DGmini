@@ -2,29 +2,34 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver
 // -----------------------------------------------------------------------------
 //
-// Description: Class for Lax-Friedrichs numerical flux
+// Description: Class for Forward Euler time integrator
 //
+//              u^{n+1} = u^n + dt * R(u^n)
+//  
+//              where R is the residual of the spatial discretization
 // -----------------------------------------------------------------------------
 
-#ifndef LAX_FRIEDRICHS_FLUX_H
-#define LAX_FRIEDRICHS_FLUX_H
+#ifndef FORWARD_EULER_H
+#define FORWARD_EULER_H
 
 #include <algorithm>
 
-#include "Spatial/numerical_flux.h"
+#include "Temporal/TimeIntegrator/time_integrator.h"
+#include "Spatial/residual.h"
 
-class LaxFriedrichsFlux : public NumericalFlux
+class ForwardEuler : public TimeIntegrator
 {
   public:
     // -------------------------------------------------------------------------
     // Construction
     // -------------------------------------------------------------------------
-    explicit LaxFriedrichsFlux(double alpha) : alpha_(alpha) {}
+    ForwardEuler() = default;
 
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
-
+    double recommendedCFL() const override { return 0.5; }
+    
     // -------------------------------------------------------------------------
     // Modification
     // -------------------------------------------------------------------------
@@ -32,19 +37,26 @@ class LaxFriedrichsFlux : public NumericalFlux
     // -------------------------------------------------------------------------
     // Operations
     // -------------------------------------------------------------------------
-    double evaluate(const PDE& pde, double uL, double uR) const override
+    void doTimeStep
+    (
+      const FESpace1D& fe,
+      const Mesh1D& mesh,
+      const PDE& pde,
+      const NumericalFlux& flux,
+      double dt,
+      ModalVector& solution
+    ) override
     {
-      const double fL = pde.convectiveFlux(uL);
-      const double fR = pde.convectiveFlux(uR);
+      assert(is_initialized_);
 
-      return 0.5 * (fL + fR) - 0.5 * alpha_ * (uR - uL);
+      residual(fe, mesh, pde, flux, solution, rhs_);
+      solution.axpy(dt, rhs_);
     }
-
+  
   private:
     // -------------------------------------------------------------------------
     // Data
     // -------------------------------------------------------------------------
-    double alpha_ = 0.0;
 };
 
 #endif

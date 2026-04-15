@@ -11,11 +11,11 @@
 
 #include "unittest.h"
 #include "Spatial/modal_vector.h"
-#include "Temporal/time_integrator.h"
+#include "Temporal/TimeIntegrator/time_integrator.h"
 #include "PDE/pde.h"
 #include "PDE/linear_advection1d.h"
-#include "Spatial/numerical_flux.h"
-#include "Spatial/rusanov_flux.h"
+#include "Spatial/NumericalFlux/numerical_flux.h"
+#include "Spatial/NumericalFlux/rusanov.h"
 #include "Spatial/l2_projection.h"
 
 // -----------------------------------------------------------------------------

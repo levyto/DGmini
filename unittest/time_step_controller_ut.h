@@ -10,7 +10,7 @@
 #define TIME_STEP_CONTROLLER_UT_H
 
 #include "unittest.h"
-#include "Temporal/time_step_controller.h"
+#include "Temporal/TimeStepController/time_step_controller.h"
 
 // -----------------------------------------------------------------------------
 // Description: TimeStepController UTs

@@ -2,8 +2,7 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver              
 // -----------------------------------------------------------------------------
 //
-// Description: L2 projection of a prescribed function onto the space 
-//              of piecewise polynomials
+// Description: du/dt = R residual assembly
 //
 // -----------------------------------------------------------------------------
 
@@ -12,14 +11,8 @@
 #include "Spatial/residual.h"
 
 // -----------------------------------------------------------------------------
-// Description: L2 projection of a prescribed function u0 onto the space of 
-//              polynomials of degree p on a given element. The projection is 
-//              computed by solving the linear system M u = b, where M is the 
-//              mass matrix on the reference element and b is the vector of 
-//              inner products of u0 with the basis functions.
-//
-//              Note that the mass matrix is diagonal for Legendre basis 
-//              functions, which simplifies the solution of the linear system.
+// Description: Compute the residual R(u) for the given solution vector u, which 
+//              represents the spatial discretization of the PDE
 // -----------------------------------------------------------------------------
 void residual
 (

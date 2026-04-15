@@ -11,7 +11,7 @@
 
 #include <algorithm>
 
-#include "Spatial/numerical_flux.h"
+#include "Spatial/NumericalFlux/numerical_flux.h"
 
 class RusanovFlux : public NumericalFlux
 {

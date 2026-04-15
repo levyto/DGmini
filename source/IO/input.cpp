@@ -11,14 +11,14 @@
 #include "IO/input.h"
 #include "PDE/linear_advection1d.h"
 #include "PDE/burgers1d.h"
-#include "Spatial/lax_friedrichs_flux.h"
-#include "Spatial/rusanov_flux.h"
-#include "Temporal/forward_euler.h"
-#include "Temporal/runge_kutta_2.h"
-#include "Temporal/runge_kutta_3_ssp.h"
-#include "Temporal/runge_kutta_4.h"
-#include "Temporal/fixed_time_step.h"
-#include "Temporal/cfl_time_step.h"
+#include "Spatial/NumericalFlux/lax_friedrichs.h"
+#include "Spatial/NumericalFlux/rusanov.h"
+#include "Temporal/TimeIntegrator/forward_euler.h"
+#include "Temporal/TimeIntegrator/runge_kutta_2.h"
+#include "Temporal/TimeIntegrator/runge_kutta_3_ssp.h"
+#include "Temporal/TimeIntegrator/runge_kutta_4.h"
+#include "Temporal/TimeStepController/fixed_time_step.h"
+#include "Temporal/TimeStepController/cfl_time_step.h"
   
 // -----------------------------------------------------------------------------
 // Description: Create a PDE instance based on its name

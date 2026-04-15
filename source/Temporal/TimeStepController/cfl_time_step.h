@@ -14,7 +14,7 @@
 #ifndef CFL_TIME_STEP_H
 #define CFL_TIME_STEP_H
 
-#include "Temporal/time_step_controller.h"
+#include "Temporal/TimeStepController/time_step_controller.h"
 #include "Temporal/cfl_number.h"
 
 class CFLTimeStep : public TimeStepController
@@ -43,6 +43,8 @@ class CFLTimeStep : public TimeStepController
     ) const override
     {
       const double max_lambda = evalMaxConvectiveEigenvalue(fe, mesh, pde, solution);
+
+      // Uniform mesh
       const double h = mesh.element(0).right() - mesh.element(0).left();
 
       return cfl_ * h / ((2.0 * fe.order() + 1.0) * max_lambda);

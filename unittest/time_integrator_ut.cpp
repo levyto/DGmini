@@ -9,10 +9,10 @@
 #include <cmath>
 
 #include "time_integrator_ut.h"
-#include "Temporal/forward_euler.h"
-#include "Temporal/runge_kutta_2.h"
-#include "Temporal/runge_kutta_3_ssp.h"
-#include "Temporal/runge_kutta_4.h"
+#include "Temporal/TimeIntegrator/forward_euler.h"
+#include "Temporal/TimeIntegrator/runge_kutta_2.h"
+#include "Temporal/TimeIntegrator/runge_kutta_3_ssp.h"
+#include "Temporal/TimeIntegrator/runge_kutta_4.h"
 
 // -----------------------------------------------------------------------------
 // Description: Helper functions for TimeIntegrator UTs

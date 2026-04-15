@@ -32,6 +32,8 @@ double computeEffectiveCFL
 )
 {
   const double max_lambda = evalMaxConvectiveEigenvalue(fe, mesh, pde, solution);
+
+  // Uniform mesh assumption
   const double h = mesh.element(0).right() - mesh.element(0).left();
 
   return dt * ((2.0 * fe.order() + 1.0) * max_lambda) / h;
@@ -82,7 +84,7 @@ double evalMaxConvectiveEigenvalue
     max_lambda = std::max(max_lambda, pde.maxConvectiveEigenvalue(uR));
   }
 
-  assert(max_lambda > 0.0);
+  assert(max_lambda >= 0.0);
 
   return max_lambda;
 }

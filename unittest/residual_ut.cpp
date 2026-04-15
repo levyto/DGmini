@@ -13,7 +13,7 @@
 #include "residual_ut.h"
 #include "PDE/burgers1d.h"
 #include "PDE/linear_advection1d.h"
-#include "Spatial/rusanov_flux.h"
+#include "Spatial/NumericalFlux/rusanov.h"
 
 // -----------------------------------------------------------------------------
 // Description: Zero solution should yield zero residual for any PDE
