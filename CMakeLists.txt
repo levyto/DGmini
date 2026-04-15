@@ -24,12 +24,15 @@ add_executable(dgmini
 
   source/Spatial/l2_projection.cpp
   source/Spatial/residual.cpp
+
+  source/Temporal/cfl_number.cpp
 )
 target_include_directories(dgmini PRIVATE source)
 
 add_executable(dgmini_unittest
   unittest/unittest_main.cpp
   unittest/basis1d_ut.cpp
+  unittest/cfl_number_ut.cpp
   unittest/element1d_ut.cpp
   unittest/fespace1d_ut.cpp
   unittest/l2_projection_ut.cpp
@@ -63,5 +66,7 @@ add_executable(dgmini_unittest
 
   source/Spatial/l2_projection.cpp
   source/Spatial/residual.cpp
+
+  source/Temporal/cfl_number.cpp
 )
 target_include_directories(dgmini_unittest PRIVATE source unittest)

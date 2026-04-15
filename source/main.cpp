@@ -23,6 +23,7 @@
 #include "Spatial/residual.h"
 #include "Temporal/time_integrator.h"
 #include "Temporal/time_step_controller.h"
+#include "Temporal/cfl_number.h"
 
 using std::cout;
 
@@ -54,8 +55,8 @@ int main()
   // auto integrator = createTimeIntegrator("runge_kutta_2");
   integrator->initialize(mesh, fe);
 
-  // auto dt_controller = createTimeStepController("cfl_time_step", 0.53);
-  auto dt_controller = createTimeStepController("cfl_time_step", 0.45);
+  auto dt_controller = createTimeStepController("cfl_time_step", 0.53);
+  // auto dt_controller = createTimeStepController("cfl_time_step", 0.45);
 
   // ---------------------------------------------------------------------------
   // Solution vectors
@@ -93,6 +94,15 @@ int main()
   {
     double dt = dt_controller->computeTimeStep(fe, mesh, *pde, sol);
     
+    const double effective_cfl = computeEffectiveCFL(fe, mesh, *pde, sol, dt);
+    if (effective_cfl > integrator->recommendedCFL())
+    {
+      std::cout << "\nWarning: current CFL = " << effective_cfl
+                << " exceeds recommended value "
+                << integrator->recommendedCFL()
+                << " for selected time integrator.";
+    }
+
     integrator->doTimeStep(fe, mesh, *pde, *flux, dt, sol);
 
     time += dt;

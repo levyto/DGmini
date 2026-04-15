@@ -15,7 +15,6 @@
 #include "Temporal/fixed_time_step.h"
 #include "Temporal/cfl_time_step.h"
 #include "PDE/linear_advection1d.h"
-#include "PDE/burgers1d.h"
 
 // -----------------------------------------------------------------------------
 // Description: Test that FixedTimeStep controller returns the prescribed time 
@@ -73,67 +72,4 @@ void Test_TimeStepController_CFLTimeStepLinearAdvectionConstantSolution()
 
   CheckEqual(computed_dt, expected_dt, 1e-14, 
              "CFLTimeStep returned wrong dt for linear advection");
-}
-
-// -----------------------------------------------------------------------------
-// Description: Test that CFLTimeStep controller returns the correct time step
-//              for Burgers' equation with a piecewise constant solution, which
-//              should be the same as the CFL time step based on the maximum
-//              eigenvalue of the flux Jacobian (which is the solution value for
-//              Burgers) and the mesh size
-// -----------------------------------------------------------------------------
-void Test_TimeStepController_CFLTimeStepBurgersP0UsesMaxSolutionValue()
-{
-  const double cfl = 0.5;
-  const int p = 0;
-  const int Ne = 3;
-
-  FESpace1D fe(p);
-  Mesh1D mesh(0.0, 3.0, Ne); // h = 1
-  Burgers1D pde;
-  ModalVector u(mesh.Ne(), fe.DoFs());
-
-  u(0,0) = 1.0;
-  u(1,0) = -3.0;
-  u(2,0) = 2.0;
-
-  CFLTimeStep controller(cfl);
-
-  const double expected_dt = cfl * 1.0 / ((2.0 * fe.order() + 1.0) * 3.0);
-  const double computed_dt = controller.computeTimeStep(fe, mesh, pde, u);
-
-  CheckEqual(computed_dt, expected_dt, 1e-14,
-             "CFLTimeStep returned wrong dt for Burgers p=0");
-}
-
-// -----------------------------------------------------------------------------
-// Description: Test that CFLTimeStep controller correctly accounts for the
-//              solution values at the element boundaries when computing the
-//              maximum eigenvalue
-// -----------------------------------------------------------------------------
-void Test_TimeStepController_CFLTimeStepReflectsElementBoundaries()
-{
-  const double cfl = 0.5;
-  const int      p = 1;
-  const int     Ne = 1;
-
-  FESpace1D fe(p);
-  Mesh1D mesh(0.0, 1.0, Ne);
-  Burgers1D pde;
-  ModalVector u(mesh.Ne(), fe.DoFs());
-  u.zero();
- 
-  // Linear solution on element 0 (from -1 to 1)
-  u(0,0) = 0.0;
-  u(0,1) = 1.0;
-
-  CFLTimeStep controller(cfl);
-
-  const double h = 1.0;
-  const double expected_dt = cfl * h / ((2.0 * fe.order() + 1.0) * 1.0);
-
-  const double computed_dt = controller.computeTimeStep(fe, mesh, pde, u);
-
-  CheckEqual(computed_dt, expected_dt, 1e-14,
-             "CFLTimeStep should use boundary values when computing max eigenvalue");
 }

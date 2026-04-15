@@ -27,6 +27,7 @@
 #include "output_ut.h"
 #include "time_integrator_ut.h"
 #include "time_step_controller_ut.h"
+#include "cfl_number_ut.h"
 
 int main()
 {
@@ -50,6 +51,7 @@ int main()
   Register_Test_output(registry);
   Register_Test_TimeIntegrator(registry);
   Register_Test_TimeStepController(registry);
+  Register_Test_CFLNumber(registry);
 
 
   registry.run_all();
