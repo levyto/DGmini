@@ -28,7 +28,8 @@ cmake --build build
 ./build/dgmini            # To run the solver
 ./build/dgmini_unittest   # To run unittests
 ```
-**VS Code**: The repository includes predefined tasks in `.vscode/tasks.json` for configuring CMake, building `dgmini` and `dgmini_unittest`, and running both executables. Open the project in VS Code and use `Tasks: Run Task` to access them.
+**VS Code**: 
+The repository includes predefined tasks in `.vscode/tasks.json` for configuring CMake, building `dgmini` and `dgmini_unittest`, and running both executables. Open the project in VS Code and use `Tasks: Run Task` to access them.
 
 ---
 
@@ -43,6 +44,8 @@ cmake --build build
 - PDEs: 
   - linear advection equation
   - Burgers' equation
+
+---
 
 ## Project Structure
 
@@ -81,7 +84,7 @@ cmake --build build
 - *IO* handles input parsing and output generation
 
 This separation keeps the code modular and allows independent extension of:
-- physical models
+- mathematical models
 - numerical schemes
 - basis functions and numerical quadrature [hard-coded for now]
 
