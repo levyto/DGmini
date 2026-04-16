@@ -2,82 +2,95 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver              
 // -----------------------------------------------------------------------------
 //
-// Description: Definitions of inputs and readers
+// Description: Definitions of runtime creation of objects 
+//              (PDE, numerical flux, time integrator, time step controller)
 //
 // -----------------------------------------------------------------------------
 
 #include <stdexcept>
 
-#include "IO/input.h"
+#include "Solver/runtime_factory.h"
+
 #include "PDE/linear_advection1d.h"
 #include "PDE/burgers1d.h"
+
 #include "Spatial/NumericalFlux/lax_friedrichs.h"
 #include "Spatial/NumericalFlux/rusanov.h"
+
 #include "Temporal/TimeIntegrator/forward_euler.h"
 #include "Temporal/TimeIntegrator/runge_kutta_2.h"
 #include "Temporal/TimeIntegrator/runge_kutta_3_ssp.h"
 #include "Temporal/TimeIntegrator/runge_kutta_4.h"
+
 #include "Temporal/TimeStepController/fixed_time_step.h"
 #include "Temporal/TimeStepController/cfl_time_step.h"
-  
+
 // -----------------------------------------------------------------------------
 // Description: Create a PDE instance based on its name
 // -----------------------------------------------------------------------------
-std::unique_ptr<PDE> createPDE(const std::string& name)
+std::unique_ptr<PDE> createPDE(const InputConfig& config)
 {
-  if (name == "linear_advection1d")
-    return std::make_unique<LinearAdvection1D>(1.0);
+  const auto &pde = config.pde;
 
-  if (name == "burgers")
+  if (pde.type == "linear_advection")
+    return std::make_unique<LinearAdvection1D>(pde.advection_speed);
+
+  if (pde.type == "burgers")
     return std::make_unique<Burgers1D>();
 
-  throw std::runtime_error("Unknown PDE model: " + name);
+  throw std::runtime_error("Unknown PDE model: " + pde.type);
 }
 
 // -----------------------------------------------------------------------------
 // Description: Create a NumericalFlux instance based on its name
 // -----------------------------------------------------------------------------
-std::unique_ptr<NumericalFlux> createNumericalFlux(const std::string& name)
+std::unique_ptr<NumericalFlux> createNumericalFlux(const InputConfig& config)
 {
-  if (name == "lax_friedrichs")
-    return std::make_unique<LaxFriedrichsFlux>(1.0);
+  const auto &flux = config.flux;
 
-  if (name == "rusanov")
+  if (flux.type == "lax_friedrichs")
+    return std::make_unique<LaxFriedrichsFlux>(flux.alpha);
+
+  if (flux.type == "rusanov")
     return std::make_unique<RusanovFlux>();
 
-  throw std::runtime_error("Unknown numerical flux: " + name);
+  throw std::runtime_error("Unknown numerical flux: " + flux.type);
 }
 
 // -----------------------------------------------------------------------------
 // Description: Create a TimeIntegrator instance based on its name
 // -----------------------------------------------------------------------------
-std::unique_ptr<TimeIntegrator> createTimeIntegrator(const std::string& name)
+std::unique_ptr<TimeIntegrator> createTimeIntegrator(const InputConfig& config)
 {
-  if (name == "forward_euler")
+  const auto &ti = config.time_integrator;
+
+  if (ti.type == "forward_euler")
     return std::make_unique<ForwardEuler>();
 
-  if (name == "runge_kutta_2")
+  if (ti.type == "rk2")
     return std::make_unique<RungeKutta2>();
 
-  if (name == "runge_kutta_3_ssp")
+  if (ti.type == "rk3_ssp")
     return std::make_unique<RungeKutta3SSP>();
 
-  if (name == "runge_kutta_4")
+  if (ti.type == "rk4")
     return std::make_unique<RungeKutta4>();
 
-  throw std::runtime_error("Unknown time integrator: " + name);
+  throw std::runtime_error("Unknown time integrator: " + ti.type);
 }
 
 // -----------------------------------------------------------------------------
 // Description: Create a TimeStepController instance based on its name
 // -----------------------------------------------------------------------------
-std::unique_ptr<TimeStepController> createTimeStepController(const std::string& name, double value)
+std::unique_ptr<TimeStepController> createTimeStepController(const InputConfig& config)
 {
-  if (name == "fixed_time_step")
-    return std::make_unique<FixedTimeStep>(value);
+  const auto &tsc = config.time_step_controller;
 
-  if (name == "cfl_time_step")
-    return std::make_unique<CFLTimeStep>(value);
+  if (tsc.type == "fixed")
+    return std::make_unique<FixedTimeStep>(tsc.dt);
 
-  throw std::runtime_error("Unknown time step controller: " + name);
+  if (tsc.type == "cfl")
+    return std::make_unique<CFLTimeStep>(tsc.cfl);
+
+  throw std::runtime_error("Unknown time step controller: " + tsc.type);
 }

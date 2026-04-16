@@ -1,0 +1,41 @@
+meta:
+  application: DGmini
+  version: 0.1
+  description: Input configuration file
+
+mesh:
+  x_left: 0.0
+  x_right: 1.0
+  n_elements: 20
+
+fem:
+  order: 2
+
+pde:
+  type: linear_advection
+  advection_speed: 1.0
+
+flux:
+  type: rusanov
+  alpha: 1.0
+
+time_integrator:
+  type: forward_euler
+
+time_step_controller:
+  type: cfl
+  cfl: 0.35
+  dt: 0.001   # ignored if type = cfl
+
+run:
+  final_time: 1.0
+
+initial_condition:
+  expression: "sin(2*pi*x)"
+
+output:
+  directory: output
+  prefix: solution
+  output_dt: 0.01
+  write_initial: true
+  write_final: true

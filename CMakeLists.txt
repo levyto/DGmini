@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+find_package(yaml-cpp REQUIRED)
+find_package(muparser REQUIRED)
+
 add_executable(dgmini 
   source/main.cpp
 
@@ -15,24 +18,29 @@ add_executable(dgmini
   source/FEM/mass_matrix.cpp
   source/FEM/quadrature1d.cpp
 
-  source/IO/input.cpp
+  source/IO/config_reader.cpp
   source/IO/output.cpp
 
   source/Mesh/element1d.cpp
   source/Mesh/mesh1d.cpp
 
-  source/Spatial/l2_projection.cpp
   source/Spatial/residual.cpp
 
   source/Temporal/cfl_number.cpp
+
+  source/Solver/solver.cpp
+  source/Solver/runtime_factory.cpp
 )
 target_include_directories(dgmini PRIVATE source)
+target_link_libraries(dgmini PRIVATE yaml-cpp muparser)
 
 add_executable(dgmini_unittest
   unittest/unittest_main.cpp
   unittest/basis1d_ut.cpp
+  unittest/config_reader_ut.cpp
   unittest/cfl_number_ut.cpp
   unittest/element1d_ut.cpp
+  unittest/expression_function_ut.cpp
   unittest/fespace1d_ut.cpp
   unittest/l2_projection_ut.cpp
   unittest/linalg_ut.cpp
@@ -48,7 +56,7 @@ add_executable(dgmini_unittest
   unittest/time_integrator_ut.cpp
   unittest/time_step_controller_ut.cpp
   unittest/Vec_ut.cpp
-  
+
   source/Algebra/linalg.cpp
 
   source/FEM/basis1d.cpp
@@ -56,14 +64,15 @@ add_executable(dgmini_unittest
   source/FEM/mass_matrix.cpp
   source/FEM/quadrature1d.cpp
 
+  source/IO/config_reader.cpp
   source/IO/output.cpp
 
   source/Mesh/element1d.cpp
   source/Mesh/mesh1d.cpp
 
-  source/Spatial/l2_projection.cpp
   source/Spatial/residual.cpp
 
   source/Temporal/cfl_number.cpp
 )
 target_include_directories(dgmini_unittest PRIVATE source unittest)
+target_link_libraries(dgmini_unittest PRIVATE yaml-cpp muparser)

@@ -6,3 +6,4 @@ scripts/__pycache__/
 !.vscode/tasks.json
 *.user
 *.tmp
+*.codex
