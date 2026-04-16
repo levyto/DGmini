@@ -7,13 +7,13 @@ A lightweight, self-contained C++ implementation of a 1D discontinuous Galerkin 
 ## Dependencies
 
 DGmini depends on the following external libraries:
-
+- [`CMake`](https://cmake.org/) (version 3.16 or newer)
 - [`yaml-cpp`](https://github.com/jbeder/yaml-cpp) for parsing YAML solver input files 
 - [`muparser`](https://github.com/beltoforion/muparser) for parsing mathematical expressions
 
 On Ubuntu, install with:
 ```bash
-sudo apt-get install libyaml-cpp-dev libmuparser-dev
+sudo apt-get install cmake libyaml-cpp-dev libmuparser-dev
 ```
 
 ---
