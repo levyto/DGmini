@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Run a 1D linear-advection *time-convergence* study for DGmini.
+"""Run a 1D Burgers' *time-convergence* study for DGmini.
 
-This script measures temporal accuracy on a fixed spatial discretization:
-  1. Reads a base YAML config (typically examples/advection.yaml).
+This script measures temporal accuracy for the inviscid Burgers equation on a fixed spatial discretization:
+  1. Reads a base YAML config (typically examples/burgers.yaml).
   2. Fixes the mesh size N for all runs.
   3. For each requested time integrator, uses an integrator-specific polynomial
      order p and starting CFL if provided, otherwise falls back to CLI defaults.
@@ -13,6 +13,24 @@ This script measures temporal accuracy on a fixed spatial discretization:
      of this file.
   6. Computes the L2 error of each run against the corresponding reference run.
   7. Prints convergence tables and writes summary CSV + log-log plots.
+
+Notes:
+  - This script measures the temporal order against a fine-time numerical reference
+    on the same spatial discretization, rather than against the analytical solution.
+  - This is the preferred setup for Burgers' equation, since even in the smooth regime
+    the exact solution is implicit, and after shock formation a smooth exact solution
+    no longer exists.
+  - For the default initial condition u0(x) = sin(2*pi*x), the shock forms at
+        t_s = - 1/min(u'_0(x)) = 1 / (2*pi) ≈ 0.159155.
+    Therefore the default final time T = 0.15 is still in the pre-shock regime.
+  - The reference solution uses the same mesh and polynomial order as the tested run,
+    but a much smaller CFL, so the measured error is intended to isolate the temporal
+    discretization error.
+  - The printed dt is the effective average time step dt_avg = T / n_steps.
+    If the solver clips the last step to hit final_time exactly, the last actual step
+    may be smaller.
+  - The initial condition expression is injected into the YAML from
+    INITIAL_CONDITION_EXPRESSION below.
 """
 
 from __future__ import annotations
@@ -66,10 +84,13 @@ REF_CFL_BY_INTEGRATOR = {
 }
 
 # Base number of elements. The script refines this as N, 2N, 4N, ...
-N_ELEM = 10
+N_ELEM = 100
 
 # Initial condition used both in YAML and in the exact solution before shock formation.
 INITIAL_CONDITION_EXPRESSION = "sin(2*pi*x)"
+
+# Final time for the convergence test. Should be before shock formation for the chosen IC.
+FINAL_TIME = 0.15
 
 
 def parse_args() -> argparse.Namespace:
@@ -83,7 +104,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--config",
         type=Path,
-        default=Path("./examples/advection.yaml"),
+        default=Path("./examples/burgers.yaml"),
         help="Base YAML config.",
     )
     parser.add_argument(
@@ -120,7 +141,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--results-dir",
         type=Path,
-        default=Path("./output/advection_convergence_time"),
+        default=Path("./output/burgers_convergence_time"),
         help="Directory where generated configs, outputs, tables, and plots are stored.",
     )
     return parser.parse_args()
@@ -139,8 +160,8 @@ def dump_yaml(data: dict, path: Path) -> None:
 
 def validate_base_config(cfg: dict) -> None:
     pde_type = cfg["pde"]["type"]
-    if pde_type != "linear_advection":
-        raise ValueError(f"This script expects pde.type = 'linear_advection', got {pde_type!r}.")
+    if pde_type != "burgers":
+        raise ValueError(f"This script expects pde.type = 'burgers', got {pde_type!r}.")
 
     tsc_type = cfg["time_step_controller"]["type"]
     if tsc_type != "cfl":
@@ -148,10 +169,6 @@ def validate_base_config(cfg: dict) -> None:
             "This script is intended for CFL-driven runs so that dt scales with h. "
             f"Got time_step_controller.type = {tsc_type!r}."
         )
-
-    speed = float(cfg["pde"].get("advection_speed", 0.0))
-    if abs(speed) <= 0.0:
-        raise ValueError("Advection speed must be nonzero for one-rotation test.")
 
 
 def validate_override_mappings() -> None:
@@ -193,11 +210,7 @@ def infer_polynomial_order_from_coeffs(coeffs: np.ndarray) -> int:
 
 
 def compute_final_time(cfg: dict) -> float:
-    x_left = float(cfg["mesh"]["x_left"])
-    x_right = float(cfg["mesh"]["x_right"])
-    length = x_right - x_left
-    speed = float(cfg["pde"]["advection_speed"])
-    return length / abs(speed)
+    return FINAL_TIME
 
 
 def compute_l2_error_against_reference(
@@ -410,7 +423,7 @@ def make_plots(results_dir: Path, all_results: Dict[str, List[Dict[str, float]]]
         )
     ax.set_xlabel("dt_avg")
     ax.set_ylabel(r"$L^2$ error vs reference")
-    ax.set_title("DGmini advection temporal convergence after one period")
+    ax.set_title("DGmini Burgers' temporal convergence after one period")
     ax.grid(True, which="both")
     ax.legend()
     fig.tight_layout()
@@ -434,7 +447,7 @@ def make_plots(results_dir: Path, all_results: Dict[str, List[Dict[str, float]]]
         )
     ax.set_xlabel("number of time steps")
     ax.set_ylabel(r"$L^2$ error vs reference")
-    ax.set_title("DGmini advection temporal convergence after one period")
+    ax.set_title("DGmini Burgers' temporal convergence after one period")
     ax.grid(True, which="both")
     ax.legend()
     fig.tight_layout()

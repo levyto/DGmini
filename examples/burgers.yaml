@@ -25,7 +25,8 @@ time_step_controller:
   cfl: 0.4
 
 run:
-  final_time: 1.0
+  final_time: 1.00 # Time when shock forms for u_0(x) = sin(2*pi*x):
+                   # is t = - 1/min(u'_0(x)) = 1/(2*pi) ~ 0.159
 
 initial_condition:
   # expression: "sin(2*pi*x)"
@@ -35,5 +36,5 @@ output:
   directory: output/burgers
   prefix: solution
   output_dt: 0.01
-  write_initial: true
+  write_initial: false
   write_final: true
