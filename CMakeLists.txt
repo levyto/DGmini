@@ -18,6 +18,7 @@ add_executable(dgmini
   source/FEM/mass_matrix.cpp
   source/FEM/quadrature1d.cpp
 
+  source/IO/cli_parser.cpp
   source/IO/config_reader.cpp
   source/IO/output.cpp
 

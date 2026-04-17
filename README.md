@@ -25,8 +25,11 @@ Manually build and run with:
 ```bash
 cmake -S . -B build
 cmake --build build
-./build/dgmini            # To run the solver
-./build/dgmini_unittest   # To run unittests
+
+./build/dgmini --config path/to/input.yaml # To run the solver
+./build/dgmini # runs with input.yaml in root
+
+./build/dgmini_unittest # To run unittests
 ```
 **VS Code**: 
 The repository includes predefined tasks in `.vscode/tasks.json` for configuring CMake, building `dgmini` and `dgmini_unittest`, and running both executables. Open the project in VS Code and use `Tasks: Run Task` to access them.
