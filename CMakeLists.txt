@@ -36,27 +36,27 @@ target_include_directories(dgmini PRIVATE source)
 target_link_libraries(dgmini PRIVATE yaml-cpp muparser)
 
 add_executable(dgmini_unittest
-  unittest/unittest_main.cpp
-  unittest/basis1d_ut.cpp
-  unittest/config_reader_ut.cpp
-  unittest/cfl_number_ut.cpp
-  unittest/element1d_ut.cpp
-  unittest/expression_function_ut.cpp
-  unittest/fespace1d_ut.cpp
-  unittest/l2_projection_ut.cpp
-  unittest/linalg_ut.cpp
-  unittest/mass_matrix_ut.cpp
-  unittest/Mat_ut.cpp
-  unittest/mesh1d_ut.cpp
-  unittest/modal_vector_ut.cpp
-  unittest/numerical_flux_ut.cpp
-  unittest/output_ut.cpp
-  unittest/pde_ut.cpp
-  unittest/quadrature1d_ut.cpp
-  unittest/residual_ut.cpp
-  unittest/time_integrator_ut.cpp
-  unittest/time_step_controller_ut.cpp
-  unittest/Vec_ut.cpp
+  tests/unit/unittest_main.cpp
+  tests/unit/basis1d_ut.cpp
+  tests/unit/config_reader_ut.cpp
+  tests/unit/cfl_number_ut.cpp
+  tests/unit/element1d_ut.cpp
+  tests/unit/expression_function_ut.cpp
+  tests/unit/fespace1d_ut.cpp
+  tests/unit/l2_projection_ut.cpp
+  tests/unit/linalg_ut.cpp
+  tests/unit/mass_matrix_ut.cpp
+  tests/unit/Mat_ut.cpp
+  tests/unit/mesh1d_ut.cpp
+  tests/unit/modal_vector_ut.cpp
+  tests/unit/numerical_flux_ut.cpp
+  tests/unit/output_ut.cpp
+  tests/unit/pde_ut.cpp
+  tests/unit/quadrature1d_ut.cpp
+  tests/unit/residual_ut.cpp
+  tests/unit/time_integrator_ut.cpp
+  tests/unit/time_step_controller_ut.cpp
+  tests/unit/Vec_ut.cpp
 
   source/Algebra/linalg.cpp
 
@@ -75,5 +75,5 @@ add_executable(dgmini_unittest
 
   source/Temporal/cfl_number.cpp
 )
-target_include_directories(dgmini_unittest PRIVATE source unittest)
+target_include_directories(dgmini_unittest PRIVATE source tests/unit)
 target_link_libraries(dgmini_unittest PRIVATE yaml-cpp muparser)

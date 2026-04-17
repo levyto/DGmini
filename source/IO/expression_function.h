@@ -41,7 +41,15 @@ class ExpressionFunction
     double operator()(double x) const
     {
       x_ = x;
-      return parser_.Eval();
+
+      try
+      {
+        return parser_.Eval();
+      }
+      catch (mu::Parser::exception_type& e)
+      {
+        throw std::runtime_error("Expression evaluation failed: " + e.GetMsg());
+      }
     }
 
     // -------------------------------------------------------------------------

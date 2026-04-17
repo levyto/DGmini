@@ -36,6 +36,22 @@
       "problemMatcher": []
     },
     {
+      "label": "Run regression tests",
+      "type": "shell",
+      "command": "PYTHONDONTWRITEBYTECODE=1 pytest -v",
+      "dependsOn": "Build dgmini",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run all tests",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Run dgmini_unittest",
+        "Run regression tests"
+      ],
+      "problemMatcher": []
+    }
+    {
       "label": "Count code lines",
       "type": "shell",
       "command": "find source unittest -type f \\( -name \"*.cpp\" -o -name \"*.h\" \\) -exec wc -l {} +",

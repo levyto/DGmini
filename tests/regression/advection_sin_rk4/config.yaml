@@ -1,0 +1,40 @@
+meta:
+  application: DGmini
+  version: 0.1
+  description: Input configuration file
+
+mesh:
+  x_left: 0.0
+  x_right: 1.0
+  n_elements: 20
+
+fem:
+  order: 2
+
+pde:
+  type: linear_advection
+  advection_speed: 1.0
+
+flux:
+  type: rusanov
+  alpha: 1.0
+
+time_integrator:
+  type: rk4
+
+time_step_controller:
+  type: cfl
+  cfl: 1.0
+
+run:
+  final_time: 1.0
+
+initial_condition:
+  expression: "sin(2*pi*x)"
+
+output:
+  directory: output/regression_advection_sin_rk4
+  prefix: solution
+  output_dt: 2.0 # no output
+  write_initial: false
+  write_final: true

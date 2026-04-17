@@ -213,7 +213,6 @@ void Test_output_TimeSeriesWriterWriteSequence()
   writer.write(mesh, solution, 0.20, false);  // should write 0002
   writer.writeFinal(mesh, solution, 0.23, false);
 
-  Check(fileExists(directory + "/solution_0000.dat"), "Missing solution_0000.dat");
   Check(fileExists(directory + "/solution_0001.dat"), "Missing solution_0001.dat");
   Check(fileExists(directory + "/solution_0002.dat"), "Missing solution_0002.dat");
   Check(!fileExists(directory + "/solution_0003.dat"), "Unexpected solution_0003.dat was written");

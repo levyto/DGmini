@@ -50,8 +50,8 @@ class TimeSeriesWriter
     : directory_(directory),
       prefix_(prefix),
       output_dt_(output_dt),
-      next_output_time_(0.0),
-      output_id_(0)
+      next_output_time_(output_dt),
+      output_id_(1)
     {
       std::filesystem::create_directories(directory_);
     }
