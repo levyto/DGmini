@@ -28,6 +28,7 @@
 #include "time_step_controller_ut.h"
 #include "cfl_number_ut.h"
 #include "config_reader_ut.h"
+#include "expression_function_ut.h"
 
 int main()
 {
@@ -52,6 +53,7 @@ int main()
   Register_Test_TimeStepController(registry);
   Register_Test_CFLNumber(registry);
   Register_Test_ConfigReader(registry);
+  Register_Test_ExpressionFunction(registry);
 
   registry.run_all();
 

@@ -13,7 +13,6 @@
 #include "Spatial/l2_projection.h"
 #include "Temporal/TimeStepController/fixed_time_step.h"
 #include "Temporal/cfl_number.h"
-#include "IO/expression_function.h"
 #include "Solver/runtime_factory.h"
 
 using std::cout;

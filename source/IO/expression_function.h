@@ -9,6 +9,7 @@
 #ifndef EXPRESSION_FUNCTION_H
 #define EXPRESSION_FUNCTION_H
 
+#include <stdexcept>
 #include <string>
 #include <muParser.h>
 
@@ -23,7 +24,15 @@ class ExpressionFunction
       parser_.DefineVar("x", &x_);
       parser_.DefineConst("pi", M_PI);
 
-      parser_.SetExpr(expr);
+      try
+      {
+        parser_.SetExpr(expr);
+      }
+      catch (mu::Parser::exception_type& e)
+      {
+        throw std::runtime_error(
+          "Invalid expression '" + expr + "': " + e.GetMsg());
+      }
     }
 
     // -------------------------------------------------------------------------

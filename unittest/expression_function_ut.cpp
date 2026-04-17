@@ -15,11 +15,12 @@
 // -----------------------------------------------------------------------------
 namespace
 {
-  bool ExpressionFunctionConstructorThrows(const std::string& expression)
+  bool ExpressionFunctionEvalThrows(const std::string& expression)
   {
     try
     {
       ExpressionFunction f(expression);
+      (void) f(0.5);
     }
     catch (const std::exception&)
     {
@@ -95,7 +96,7 @@ void Test_ExpressionFunction_gaussian()
 // -----------------------------------------------------------------------------
 void Test_ExpressionFunction_invalidExpressionThrows()
 {
-  Check(ExpressionFunctionConstructorThrows("sin(2*pi*)"),
+  Check(ExpressionFunctionEvalThrows("sin(2*pi*)"),
         "Invalid expression syntax should throw");
 }
 
@@ -104,6 +105,6 @@ void Test_ExpressionFunction_invalidExpressionThrows()
 // -----------------------------------------------------------------------------
 void Test_ExpressionFunction_unknownSymbolThrows()
 {
-  Check(ExpressionFunctionConstructorThrows("sin(2*pi*y)"),
+  Check(ExpressionFunctionEvalThrows("sin(2*pi*y)"),
         "Unknown symbol in expression should throw");
 }
