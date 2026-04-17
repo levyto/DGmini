@@ -9,6 +9,7 @@
 #ifndef EXPRESSION_FUNCTION_H
 #define EXPRESSION_FUNCTION_H
 
+#include <cmath>
 #include <stdexcept>
 #include <string>
 #include <muParser.h>
@@ -22,6 +23,7 @@ class ExpressionFunction
     explicit ExpressionFunction(const std::string& expr)
     {
       parser_.DefineVar("x", &x_);
+      parser_.DefineVar("t", &t_);
       parser_.DefineConst("pi", M_PI);
 
       try
@@ -40,7 +42,13 @@ class ExpressionFunction
     // -------------------------------------------------------------------------
     double operator()(double x) const
     {
+      return (*this)(x, 0.0);
+    }
+
+    double operator()(double x, double t) const
+    {
       x_ = x;
+      t_ = t;
 
       try
       {
@@ -65,6 +73,7 @@ class ExpressionFunction
     // Data
     // -------------------------------------------------------------------------
     mutable double x_ = 0.0;
+    mutable double t_ = 0.0;
     mu::Parser parser_;
 };
 

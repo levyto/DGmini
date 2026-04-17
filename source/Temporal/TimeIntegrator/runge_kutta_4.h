@@ -56,7 +56,9 @@ class RungeKutta4 : public TimeIntegrator
       const Mesh1D& mesh,
       const PDE& pde,
       const NumericalFlux& flux,
-      double dt,
+      const BoundaryConditions1D& bc,
+      const double time,
+      const double dt,
       ModalVector& solution
     ) override
     {
@@ -66,7 +68,8 @@ class RungeKutta4 : public TimeIntegrator
 
       // -----------------------------------------------------------------------
       // R(u^{1})
-      residual(fe, mesh, pde, flux, solution_1_, rhs_);
+      double t = time;
+      residual(fe, mesh, pde, flux, bc, t, solution_1_, rhs_);
 
       // u^{n+1} += 1/6*dt * R(u^{1})
       solution.axpy(1.0 / 6.0 * dt, rhs_); 
@@ -77,7 +80,8 @@ class RungeKutta4 : public TimeIntegrator
      
       // -----------------------------------------------------------------------
       // R(u^{2})
-      residual(fe, mesh, pde, flux, solution_2_, rhs_); 
+      t = time + 0.5 * dt;
+      residual(fe, mesh, pde, flux, bc, t, solution_2_, rhs_);
 
       // u^{n+1} += 1/3*dt * R(u^{2})
       solution.axpy(1.0 / 3.0 * dt, rhs_); 
@@ -88,7 +92,8 @@ class RungeKutta4 : public TimeIntegrator
 
       // -----------------------------------------------------------------------
       // R(u^{3})
-      residual(fe, mesh, pde, flux, solution_2_, rhs_); 
+      t = time + 0.5 * dt;
+      residual(fe, mesh, pde, flux, bc, t, solution_2_, rhs_);
 
       // u^{n+1} += 1/3*dt * R(u^{3})
       solution.axpy(1.0 / 3.0 * dt, rhs_); 
@@ -99,7 +104,8 @@ class RungeKutta4 : public TimeIntegrator
 
       // ----------------------------------------------------------------------- 
       // R(u^{4})
-      residual(fe, mesh, pde, flux, solution_2_, rhs_); 
+      t = time + dt;
+      residual(fe, mesh, pde, flux, bc, t, solution_2_, rhs_);
 
       // u^{n+1} += 1/6*dt * R(u^{4})
       solution.axpy(1.0 / 6.0 * dt, rhs_); 

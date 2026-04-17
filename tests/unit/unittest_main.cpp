@@ -29,6 +29,8 @@
 #include "cfl_number_ut.h"
 #include "config_reader_ut.h"
 #include "expression_function_ut.h"
+#include "runtime_factory_ut.h"
+#include "cli_parser_ut.h"
 
 int main()
 {
@@ -54,6 +56,8 @@ int main()
   Register_Test_CFLNumber(registry);
   Register_Test_ConfigReader(registry);
   Register_Test_ExpressionFunction(registry);
+  Register_Test_RuntimeFactory(registry);
+  Register_Test_CLIParser(registry);
 
   registry.run_all();
 

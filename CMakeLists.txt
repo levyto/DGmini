@@ -38,6 +38,7 @@ target_link_libraries(dgmini PRIVATE yaml-cpp muparser)
 add_executable(dgmini_unittest
   tests/unit/unittest_main.cpp
   tests/unit/basis1d_ut.cpp
+  tests/unit/cli_parser_ut.cpp
   tests/unit/config_reader_ut.cpp
   tests/unit/cfl_number_ut.cpp
   tests/unit/element1d_ut.cpp
@@ -54,6 +55,7 @@ add_executable(dgmini_unittest
   tests/unit/pde_ut.cpp
   tests/unit/quadrature1d_ut.cpp
   tests/unit/residual_ut.cpp
+  tests/unit/runtime_factory_ut.cpp
   tests/unit/time_integrator_ut.cpp
   tests/unit/time_step_controller_ut.cpp
   tests/unit/Vec_ut.cpp
@@ -65,6 +67,7 @@ add_executable(dgmini_unittest
   source/FEM/mass_matrix.cpp
   source/FEM/quadrature1d.cpp
 
+  source/IO/cli_parser.cpp
   source/IO/config_reader.cpp
   source/IO/output.cpp
 
@@ -74,6 +77,8 @@ add_executable(dgmini_unittest
   source/Spatial/residual.cpp
 
   source/Temporal/cfl_number.cpp
+
+  source/Solver/runtime_factory.cpp
 )
 target_include_directories(dgmini_unittest PRIVATE source tests/unit)
 target_link_libraries(dgmini_unittest PRIVATE yaml-cpp muparser)

@@ -10,10 +10,11 @@ DGmini depends on the following external libraries:
 - [`CMake`](https://cmake.org/) (version 3.16 or newer)
 - [`yaml-cpp`](https://github.com/jbeder/yaml-cpp) for parsing YAML solver input files 
 - [`muparser`](https://github.com/beltoforion/muparser) for parsing mathematical expressions
+- [`pytest`](https://docs.pytest.org/en/stable/) for running Python-based tests
 
 On Ubuntu, install with:
 ```bash
-sudo apt-get install cmake libyaml-cpp-dev libmuparser-dev
+sudo apt-get install cmake libyaml-cpp-dev libmuparser-dev python3-pytest
 ```
 
 ---
@@ -47,6 +48,7 @@ building the executables, and running unit, regression, and verification tests. 
 - Modal basis functions for any order $p$
 - Gauss-Legendre quadrature rule
 - Convective numerical fluxes: Lax-Friedrichs, Rusanov
+- Boundary conditions: periodic, outflow, time-dependent Dirichlet
 - Time integration: Forward Euler, Runge-Kutta RK2 / SSP RK3 / RK4
 - Time step control: fixed time step size or CFL number
 - PDEs: 

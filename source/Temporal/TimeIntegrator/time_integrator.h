@@ -12,6 +12,7 @@
 #define TIME_INTEGRATOR_H
 
 #include "FEM/fespace1d.h"
+#include "Mesh/boundary_conditions1d.h"
 #include "Mesh/mesh1d.h"
 #include "PDE/pde.h"
 #include "Spatial/modal_vector.h"
@@ -51,7 +52,9 @@ class TimeIntegrator
       const Mesh1D& mesh,
       const PDE& pde,
       const NumericalFlux& flux,
-      double dt,
+      const BoundaryConditions1D& bc,
+      const double time,
+      const double dt,
       ModalVector& solution
     ) = 0;
 

@@ -59,6 +59,12 @@ double OneStepError(double dt)
 {
   const int p = 5;
   const int Ne = 100;
+  
+  const double t = 0.0;
+
+  BoundaryConditions1D bc;
+  bc.left.type  = BoundaryConditionType::Periodic;
+  bc.right.type = BoundaryConditionType::Periodic;
 
   FESpace1D fe(p);
   Mesh1D mesh(0.0, 1.0, Ne);
@@ -86,7 +92,7 @@ double OneStepError(double dt)
 
   Integrator integrator;
   integrator.initialize(mesh, fe);
-  integrator.doTimeStep(fe, mesh, pde, flux, dt, u);
+  integrator.doTimeStep(fe, mesh, pde, flux, bc, t, dt, u);
 
   return modalErrorLinf(u, u_exact);
 }
@@ -101,6 +107,12 @@ void Test_TimeIntegrator_preservesConstantSolution()
   const int Ne = 8;
   const double dt = 1.0e-3;
   const double tol = 1e-13;
+
+  const double t = 0.0;
+
+  BoundaryConditions1D bc;
+  bc.left.type  = BoundaryConditionType::Periodic;
+  bc.right.type = BoundaryConditionType::Periodic;
 
   FESpace1D fe(p);
   Mesh1D mesh(0.0, 1.0, Ne);
@@ -119,7 +131,7 @@ void Test_TimeIntegrator_preservesConstantSolution()
 
   Integrator integrator;
   integrator.initialize(mesh, fe);
-  integrator.doTimeStep(fe, mesh, pde, flux, dt, u);
+  integrator.doTimeStep(fe, mesh, pde, flux, bc, t, dt, u);
 
   for (int e = 0; e < mesh.Ne(); ++e)
   {

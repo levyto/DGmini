@@ -18,6 +18,7 @@
 #include "Spatial/NumericalFlux/numerical_flux.h"
 #include "Temporal/TimeIntegrator/time_integrator.h"
 #include "Temporal/TimeStepController/time_step_controller.h"
+#include "Mesh/boundary_conditions1d.h"
 #include "Mesh/mesh1d.h"
 #include "FEM/fespace1d.h"
 #include "Spatial/modal_vector.h"
@@ -63,6 +64,8 @@ class Solver
     // Data
     // -------------------------------------------------------------------------
     InputConfig config_;
+
+    BoundaryConditions1D bc_;
 
     Mesh1D mesh_;
     FESpace1D fe_;

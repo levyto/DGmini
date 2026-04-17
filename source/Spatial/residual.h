@@ -10,6 +10,7 @@
 #define RESIDUAL_H
 
 #include "FEM/fespace1d.h"
+#include "Mesh/boundary_conditions1d.h"
 #include "Mesh/mesh1d.h"
 #include "PDE/pde.h"
 #include "Spatial/modal_vector.h"
@@ -21,6 +22,8 @@ void residual
   const Mesh1D& mesh,
   const PDE& pde,
   const NumericalFlux& flux,
+  const BoundaryConditions1D& bc,
+  const double time,
   const ModalVector& solution,
   ModalVector& rhs
 );

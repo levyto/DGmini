@@ -48,6 +48,9 @@ Solver::Solver(const InputConfig& config)
 // -----------------------------------------------------------------------------
 void Solver::initializeObjects()
 {
+  bc_.left  = createBC(config_.boundary_conditions.left);
+  bc_.right = createBC(config_.boundary_conditions.right);
+
   pde_           = createPDE(config_);
   flux_          = createNumericalFlux(config_);
   integrator_    = createTimeIntegrator(config_);
@@ -86,6 +89,24 @@ void Solver::initializeSolution()
 void Solver::printSettings() const
 {
   cout << "\n--- DGmini Settings ----------------------------------\n\n";
+
+  /* Boundary conditions ---------------------------------------------------- */
+  cout << "Boundary conditions:\n";
+  cout << "  left: "  << config_.boundary_conditions.left.type << "\n";
+
+  if (config_.boundary_conditions.left.type == "dirichlet")
+  {
+    cout << "    expression: " << config_.boundary_conditions.left.expression << "\n";
+  }
+
+  cout << "  right: " << config_.boundary_conditions.right.type << "\n";
+
+  if (config_.boundary_conditions.right.type == "dirichlet")
+  {
+    cout << "    expression: " << config_.boundary_conditions.right.expression << "\n";
+  }
+
+  cout << "\n";
 
   /* Mesh ------------------------------------------------------------------- */
   cout << "Mesh:\n";
@@ -197,7 +218,7 @@ void Solver::run()
     /* ---------------------------------------------------------------------- */
 
 
-    integrator_->doTimeStep(fe_, mesh_, *pde_, *flux_, dt, solution_);
+    integrator_->doTimeStep(fe_, mesh_, *pde_, *flux_, bc_, time, dt, solution_);
 
     time += dt;
     step++;

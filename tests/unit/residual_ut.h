@@ -20,17 +20,28 @@ void Test_residual_linearAdvectionConstant();
 void Test_residual_burgersConstant();
 void Test_residual_linearAdvectionP0MatchesFV();
 void Test_residual_linearAdvectionScalingWithVelocity();
+void Test_residual_leftDirichletUsesBoundaryValueAndTime();
+void Test_residual_rightDirichletUsesBoundaryValueAndTime();
 
 // -----------------------------------------------------------------------------
 // Description: Residual UTs registry
 // -----------------------------------------------------------------------------
 inline void Register_Test_residual(TestRegistry& registry)
 {
-    registry.add("Test_residual_linearAdvectionZeroSolution",        Test_residual_linearAdvectionZeroSolution       );
-    registry.add("Test_residual_linearAdvectionConstant",            Test_residual_linearAdvectionConstant           );
-    registry.add("Test_residual_burgersConstant",                    Test_residual_burgersConstant                   );
-    registry.add("Test_residual_linearAdvectionP0MatchesFV",         Test_residual_linearAdvectionP0MatchesFV        );
-    registry.add("Test_residual_linearAdvectionScalingWithVelocity", Test_residual_linearAdvectionScalingWithVelocity);
+    registry.add("Test_residual_linearAdvectionZeroSolution",        
+                  Test_residual_linearAdvectionZeroSolution);
+    registry.add("Test_residual_linearAdvectionConstant",            
+                  Test_residual_linearAdvectionConstant);
+    registry.add("Test_residual_burgersConstant",                    
+                  Test_residual_burgersConstant);
+    registry.add("Test_residual_linearAdvectionP0MatchesFV",         
+                  Test_residual_linearAdvectionP0MatchesFV);
+    registry.add("Test_residual_linearAdvectionScalingWithVelocity", 
+                  Test_residual_linearAdvectionScalingWithVelocity);
+    registry.add("Test_residual_leftDirichletUsesBoundaryValueAndTime",
+                  Test_residual_leftDirichletUsesBoundaryValueAndTime);
+    registry.add("Test_residual_rightDirichletUsesBoundaryValueAndTime",
+                  Test_residual_rightDirichletUsesBoundaryValueAndTime);
 }
 
 #endif

@@ -7,6 +7,7 @@
 // -----------------------------------------------------------------------------
 
 #include <cassert>
+#include <stdexcept>
 
 #include "Spatial/residual.h"
 
@@ -20,6 +21,8 @@ void residual
   const Mesh1D& mesh,
   const PDE& pde,
   const NumericalFlux& flux,
+  const BoundaryConditions1D& bc,
+  const double time,
   const ModalVector& solution,
   ModalVector& rhs
 )
@@ -82,20 +85,91 @@ void residual
       uR_minus += u_e[j] * fe.phiRight(j);
     }
 
+    /* Left state ----------------------------------------------------------- */
     double uL_minus = 0.0;
+
+    if (e > 0) 
+    {
+      // INTERIOR
+      const double* u_em1 = solution.elementPtr(e - 1);
+      for (int j = 0; j < ndof; ++j)
+      {
+        uL_minus += u_em1[j] * fe.phiRight(j); // right trace of left neighbor
+      }
+    }
+    else 
+    {
+      // LEFT BOUNDARY
+      switch (bc.left.type)
+      {
+        case BoundaryConditionType::Periodic:
+        {
+          const double* u_em1 = solution.elementPtr(Ne - 1);
+          for (int j = 0; j < ndof; ++j)
+          {
+            uL_minus += u_em1[j] * fe.phiRight(j); // right trace of left neighbor
+          }
+          break;
+        }
+        case BoundaryConditionType::Dirichlet:
+        {
+          uL_minus = (*(bc.left.expression))(element.left(), time);
+          break;
+        }
+        case BoundaryConditionType::Outflow:
+        {
+          uL_minus = uL_plus;
+          break;
+        }
+        default:
+          throw std::runtime_error(
+            "\n\nERROR: Unsupported left boundary condition type\n");
+          break;
+      }
+    }
+
+    /* Right state ---------------------------------------------------------- */
     double uR_plus = 0.0;
 
-    // periodic BC for now
-    const int eL = (e == 0) ? (Ne - 1) : (e - 1);
-    const int eR = (e == Ne - 1) ? 0 : (e + 1);
-
-    const double* u_em1 = solution.elementPtr(eL);
-    const double* u_ep1 = solution.elementPtr(eR);
-
-    for (int j = 0; j < ndof; ++j)
+    if (e < Ne - 1) 
     {
-      uL_minus += u_em1[j] * fe.phiRight(j); // right trace of left neighbor
-      uR_plus  += u_ep1[j] * fe.phiLeft(j);  // left trace of right neighbor
+      // INTERIOR
+      const double* u_ep1 = solution.elementPtr(e + 1);
+      for (int j = 0; j < ndof; ++j)
+      {
+        uR_plus += u_ep1[j] * fe.phiLeft(j); // left trace of right neighbor
+      }
+    }
+    else 
+    {
+      // RIGHT BOUNDARY
+      switch (bc.right.type)
+      {
+        case BoundaryConditionType::Periodic:
+        {
+          const double* u_ep1 = solution.elementPtr(0);
+
+          for (int j = 0; j < ndof; ++j)
+          {
+            uR_plus += u_ep1[j] * fe.phiLeft(j); // left trace of right neighbor
+          }
+          break;
+        }
+        case BoundaryConditionType::Dirichlet:
+        {
+          uR_plus = (*(bc.right.expression))(element.right(), time);
+          break;
+        }
+        case BoundaryConditionType::Outflow:
+        {
+          uR_plus = uR_minus;
+          break;
+        }
+        default:
+          throw std::runtime_error(
+            "\n\nERROR: Unsupported right boundary condition type\n");
+          break;
+      }
     }
 
     // -------------------------------------------------------------------------

@@ -79,6 +79,18 @@ InputConfig ConfigReader::read(const std::string& filename) const
       "Error parsing YAML file '" + filename + "': " + e.what() + "\n");
   }
 
+  /* boundary conditions ----------------------------------------------------- */
+  const YAML::Node bc = getRequiredSection(root, "boundary_conditions");
+
+  const YAML::Node left_bc = getRequiredSection(bc, "left");
+  const YAML::Node right_bc = getRequiredSection(bc, "right");
+
+  config.boundary_conditions.left.type  = getRequired<std::string>(left_bc, "type", "boundary_conditions.left.type");
+  config.boundary_conditions.left.expression  = getOptional<std::string>(left_bc, "expression", "");
+
+  config.boundary_conditions.right.type = getRequired<std::string>(right_bc, "type", "boundary_conditions.right.type");
+  config.boundary_conditions.right.expression = getOptional<std::string>(right_bc, "expression", "");
+
   /* mesh ------------------------------------------------------------------- */
   const YAML::Node mesh = getRequiredSection(root, "mesh");
 
@@ -145,6 +157,69 @@ InputConfig ConfigReader::read(const std::string& filename) const
 // -----------------------------------------------------------------------------
 void ConfigReader::validate(const InputConfig& config) const
 {
+  /* boundary conditions ---------------------------------------------------- */
+  if (    (config.boundary_conditions.left.type != "periodic")
+       && (config.boundary_conditions.left.type != "dirichlet")
+       && (config.boundary_conditions.left.type != "outflow")
+     )
+  {
+    throw std::runtime_error(
+      "\n\nERROR: YAML config file: Invalid 'boundary_conditions.left.type' entry, supported values are:"
+      "\n\t'periodic'"
+      "\n\t'dirichlet'"
+      "\n\t'outflow'"
+      "\n"
+    );
+  }
+
+  if (    (config.boundary_conditions.right.type != "periodic")
+       && (config.boundary_conditions.right.type != "dirichlet")
+       && (config.boundary_conditions.right.type != "outflow")
+     )
+  {
+    throw std::runtime_error(
+      "\n\nERROR: YAML config file: Invalid 'boundary_conditions.right.type' entry, supported values are:"
+      "\n\t'periodic'"
+      "\n\t'dirichlet'"
+      "\n\t'outflow'"
+      "\n"
+    );
+  }
+
+  if (    (config.boundary_conditions.left.type == "dirichlet")
+       && (config.boundary_conditions.left.expression.empty())
+     )
+  {
+    throw std::runtime_error(
+      "\n\nERROR: YAML config file: Invalid 'boundary_conditions.left.expression' entry, must be non-empty for Dirichlet BC.");
+  }
+
+  if (    (config.boundary_conditions.right.type == "dirichlet")
+       && (config.boundary_conditions.right.expression.empty())
+     )
+  {
+    throw std::runtime_error(
+      "\n\nERROR: YAML config file: Invalid 'boundary_conditions.right.expression' entry, must be non-empty for Dirichlet BC.");
+  }
+
+  const auto left  = config.boundary_conditions.left.type;
+  const auto right = config.boundary_conditions.right.type;
+
+  const bool  left_periodic = (left  == "periodic");
+  const bool right_periodic = (right == "periodic");
+  if (left_periodic != right_periodic)
+  { 
+    throw std::runtime_error(
+      "\n\nERROR: YAML config file: Invalid boundary condition types: If one BC is 'periodic', the other must also be 'periodic'.");
+  }
+
+  // i.e. valid combinations are:
+  // left: periodic    right: periodic
+  // left: dirichlet   right: dirichlet
+  // left: outflow     right: outflow
+  // left: outflow     right: dirichlet
+  // left: dirichlet   right: outflow
+
   /* mesh ------------------------------------------------------------------- */
   if (config.mesh.x_right <= config.mesh.x_left)
   {

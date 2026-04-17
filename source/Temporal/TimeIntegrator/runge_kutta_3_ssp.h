@@ -54,7 +54,9 @@ class RungeKutta3SSP : public TimeIntegrator
       const Mesh1D& mesh,
       const PDE& pde,
       const NumericalFlux& flux,
-      double dt,
+      const BoundaryConditions1D& bc,
+      const double time,
+      const double dt,
       ModalVector& solution
     ) override
     {
@@ -67,14 +69,16 @@ class RungeKutta3SSP : public TimeIntegrator
       solution.axpy(1.0 / 3.0, solution_1_);
 
       // R(u^{n})
-      residual(fe, mesh, pde, flux, solution_1_, rhs_);
+      double t = time;
+      residual(fe, mesh, pde, flux, bc, t, solution_1_, rhs_);
 
       // u^{1} = u^{n} + dt R(u^{n})
       solution_2_ = solution_1_;
       solution_2_.axpy(dt, rhs_);
 
       // R(u^{1})
-      residual(fe, mesh, pde, flux, solution_2_, rhs_);
+      t = time + dt;
+      residual(fe, mesh, pde, flux, bc, t, solution_2_, rhs_);
 
       // u^{2} = (3/4) u^{n} + (1/4) u^{1} + (1/4) dt R(u^{1})
       solution_2_.axpy(-3.0 / 4.0, solution_2_);
@@ -85,7 +89,8 @@ class RungeKutta3SSP : public TimeIntegrator
       solution.axpy(2.0 / 3.0, solution_2_);
 
       // R(u^{2})
-      residual(fe, mesh, pde, flux, solution_2_, rhs_);
+      t = time + 0.5 * dt;
+      residual(fe, mesh, pde, flux, bc, t, solution_2_, rhs_);
 
       // u^{n+1} += 2/3 * dt R(u^{2})
       solution.axpy(2.0 / 3.0 * dt, rhs_);

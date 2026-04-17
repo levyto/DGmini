@@ -16,6 +16,7 @@
 // Description: ConfigReader UTs
 // -----------------------------------------------------------------------------
 void Test_ConfigReader_incrementalRequiredKeys();
+void Test_ConfigReader_boundaryConditions();
 void Test_ConfigReader_invalidEnumeratedValues();
 void Test_ConfigReader_invalidNumericValues();
 void Test_ConfigReader_optionalDefaults();
@@ -26,6 +27,7 @@ void Test_ConfigReader_optionalDefaults();
 inline void Register_Test_ConfigReader(TestRegistry& registry)
 {
   registry.add("Test_ConfigReader_incrementalRequiredKeys", Test_ConfigReader_incrementalRequiredKeys);
+  registry.add("Test_ConfigReader_boundaryConditions",      Test_ConfigReader_boundaryConditions     );
   registry.add("Test_ConfigReader_invalidEnumeratedValues", Test_ConfigReader_invalidEnumeratedValues);
   registry.add("Test_ConfigReader_invalidNumericValues",    Test_ConfigReader_invalidNumericValues   );
   registry.add("Test_ConfigReader_optionalDefaults",        Test_ConfigReader_optionalDefaults       );

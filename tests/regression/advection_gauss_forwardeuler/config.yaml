@@ -3,6 +3,12 @@ meta:
   version: 0.1
   description: Input configuration file
 
+boundary_conditions:
+  left:
+    type: periodic
+  right:
+    type: periodic
+
 mesh:
   x_left: 0.0
   x_right: 1.0

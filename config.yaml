@@ -3,6 +3,15 @@ meta:
   version: 0.1
   description: Input configuration file
 
+boundary_conditions:
+  left:
+    type: dirichlet
+    expression: "sin(2*pi*t+pi/2)"
+    # expression: "0.5 + 0.5*sin(2*pi*t-pi/2)"
+  right:
+    type: outflow
+    expression: "-"
+
 mesh:
   x_left: 0.0
   x_right: 1.0
@@ -20,7 +29,7 @@ flux:
   alpha: 1.0
 
 time_integrator:
-  type: forward_euler
+  type: rk3_ssp
 
 time_step_controller:
   type: cfl
@@ -31,7 +40,9 @@ run:
   final_time: 1.0
 
 initial_condition:
-  expression: "sin(2*pi*x)"
+  # expression: "sin(2*pi*x)"
+  # expression: "exp(-100*(x-0.5)^2)"
+  expression: "1.0"
 
 output:
   directory: output

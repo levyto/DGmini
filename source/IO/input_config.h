@@ -11,6 +11,18 @@
 
 #include <string>
 
+struct BCInput
+{
+  std::string type;
+  std::string expression;
+};
+
+struct BoundaryConditionsInput
+{
+  BCInput left;
+  BCInput right;
+};
+
 struct MeshConfig
 {
   double x_left;
@@ -68,6 +80,7 @@ struct RunConfig
 
 struct InputConfig
 {
+  BoundaryConditionsInput   boundary_conditions;
   MeshConfig                mesh;
   FEMConfig                 fem;
   PDEConfig                 pde;

@@ -43,13 +43,15 @@ class ForwardEuler : public TimeIntegrator
       const Mesh1D& mesh,
       const PDE& pde,
       const NumericalFlux& flux,
-      double dt,
+      const BoundaryConditions1D& bc,
+      const double time,
+      const double dt,
       ModalVector& solution
     ) override
     {
       assert(is_initialized_);
 
-      residual(fe, mesh, pde, flux, solution, rhs_);
+      residual(fe, mesh, pde, flux, bc, time, solution, rhs_);
       solution.axpy(dt, rhs_);
     }
   

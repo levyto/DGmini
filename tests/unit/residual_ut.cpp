@@ -7,10 +7,13 @@
 // -----------------------------------------------------------------------------
 
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "residual_ut.h"
+#include "IO/expression_function.h"
+#include "Mesh/boundary_conditions1d.h"
 #include "PDE/burgers1d.h"
 #include "PDE/linear_advection1d.h"
 #include "Spatial/NumericalFlux/rusanov.h"
@@ -24,6 +27,12 @@ void Test_residual_linearAdvectionZeroSolution()
   const int Ne = 3;
   const double tol = 1e-14;
 
+  const double t = 0.0;
+
+  BoundaryConditions1D bc;
+  bc.left.type  = BoundaryConditionType::Periodic;
+  bc.right.type = BoundaryConditionType::Periodic;
+
   FESpace1D fe(p);
   Mesh1D mesh(0.0, 1.0, Ne);
   LinearAdvection1D pde(1.0);
@@ -34,7 +43,7 @@ void Test_residual_linearAdvectionZeroSolution()
 
   u.zero();
 
-  residual(fe, mesh, pde, flux, u, rhs);
+  residual(fe, mesh, pde, flux, bc, t, u, rhs);
 
   for (int e = 0; e < Ne; ++e)
   {
@@ -53,6 +62,12 @@ void Test_residual_linearAdvectionConstant()
   const int p = 3;
   const int Ne = 4;
   const double tol = 1e-12;
+
+  const double t = 0.0;
+
+  BoundaryConditions1D bc;
+  bc.left.type  = BoundaryConditionType::Periodic;
+  bc.right.type = BoundaryConditionType::Periodic;
 
   FESpace1D fe(p);
   Mesh1D mesh(0.0, 1.0, Ne);
@@ -73,7 +88,7 @@ void Test_residual_linearAdvectionConstant()
     }
   }
 
-  residual(fe, mesh, pde, flux, u, rhs);
+  residual(fe, mesh, pde, flux, bc, t, u, rhs);
 
   for (int e = 0; e < Ne; ++e)
   {
@@ -92,6 +107,12 @@ void Test_residual_burgersConstant()
   const int p = 3;
   const int Ne = 4;
   const double tol = 1e-12;
+
+  const double t = 0.0;
+
+  BoundaryConditions1D bc;
+  bc.left.type  = BoundaryConditionType::Periodic;
+  bc.right.type = BoundaryConditionType::Periodic;
 
   FESpace1D fe(p);
   Mesh1D mesh(0.0, 1.0, Ne);
@@ -112,7 +133,7 @@ void Test_residual_burgersConstant()
     }
   }
 
-  residual(fe, mesh, pde, flux, u, rhs);
+  residual(fe, mesh, pde, flux, bc, t, u, rhs);
 
   for (int e = 0; e < Ne; ++e)
   {
@@ -133,6 +154,12 @@ void Test_residual_linearAdvectionP0MatchesFV()
   const int Ne = 3;
   const double tol = 1e-12;
 
+  const double t = 0.0;
+
+  BoundaryConditions1D bc;
+  bc.left.type  = BoundaryConditionType::Periodic;
+  bc.right.type = BoundaryConditionType::Periodic;
+
   FESpace1D fe(p);
   Mesh1D mesh(0.0, 3.0, Ne); // deltax = 1
   LinearAdvection1D pde(1.0);
@@ -145,7 +172,7 @@ void Test_residual_linearAdvectionP0MatchesFV()
   u(1,0) = 2.0;
   u(2,0) = 4.0;
 
-  residual(fe, mesh, pde, flux, u, rhs);
+  residual(fe, mesh, pde, flux, bc, t, u, rhs);
 
   CheckEqual(rhs(0,0),  3.0, tol, "p=0 FV equivalence failed on element 0");
   CheckEqual(rhs(1,0), -1.0, tol, "p=0 FV equivalence failed on element 1");
@@ -161,6 +188,12 @@ void Test_residual_linearAdvectionScalingWithVelocity()
   const int p = 1;
   const int Ne = 3;
 
+  const double t = 0.0;
+
+  BoundaryConditions1D bc;
+  bc.left.type  = BoundaryConditionType::Periodic;
+  bc.right.type = BoundaryConditionType::Periodic;
+
   FESpace1D fe(p);
   Mesh1D mesh(0.0, 1.0, Ne);
   RusanovFlux flux;
@@ -173,8 +206,8 @@ void Test_residual_linearAdvectionScalingWithVelocity()
   for (int e = 0; e < Ne; ++e) 
     u(e, 0) = e + 1.0;
 
-  residual(fe, mesh, LinearAdvection1D(1.0), flux, u, rhs1);
-  residual(fe, mesh, LinearAdvection1D(2.0), flux, u, rhs2);
+  residual(fe, mesh, LinearAdvection1D(1.0), flux, bc, t, u, rhs1);
+  residual(fe, mesh, LinearAdvection1D(2.0), flux, bc, t, u, rhs2);
 
   for (int e = 0; e < Ne; ++e)
   {
@@ -184,4 +217,69 @@ void Test_residual_linearAdvectionScalingWithVelocity()
                  "residual must scale linearly with advection speed");
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+// Description: For positive advection, the left Dirichlet BC should use the
+//              prescribed boundary expression evaluated at the current time
+// -----------------------------------------------------------------------------
+void Test_residual_leftDirichletUsesBoundaryValueAndTime()
+{
+  const int p = 0;
+  const int Ne = 1;
+  const double tol = 1e-12;
+  const double t = 0.25;
+
+  BoundaryConditions1D bc;
+  bc.left.type = BoundaryConditionType::Dirichlet;
+  bc.left.expression = std::make_unique<ExpressionFunction>("t");
+  bc.right.type = BoundaryConditionType::Outflow;
+
+  FESpace1D fe(p);
+  Mesh1D mesh(0.0, 1.0, Ne);
+  LinearAdvection1D pde(1.0);
+  RusanovFlux flux;
+
+  ModalVector u(Ne, fe.DoFs());
+  ModalVector rhs(Ne, fe.DoFs());
+
+  u(0, 0) = 1.5;
+
+  residual(fe, mesh, pde, flux, bc, t, u, rhs);
+
+  CheckEqual(rhs(0, 0), -1.25, tol,
+             "Left Dirichlet BC should affect residual through its time-dependent value");
+}
+
+// -----------------------------------------------------------------------------
+// Description: For negative advection, the right Dirichlet BC should use the
+//              prescribed boundary expression evaluated at boundary position
+//              and current time
+// -----------------------------------------------------------------------------
+void Test_residual_rightDirichletUsesBoundaryValueAndTime()
+{
+  const int p = 0;
+  const int Ne = 1;
+  const double tol = 1e-12;
+  const double t = 0.5;
+
+  BoundaryConditions1D bc;
+  bc.left.type = BoundaryConditionType::Outflow;
+  bc.right.type = BoundaryConditionType::Dirichlet;
+  bc.right.expression = std::make_unique<ExpressionFunction>("x + t");
+
+  FESpace1D fe(p);
+  Mesh1D mesh(0.0, 1.0, Ne);
+  LinearAdvection1D pde(-2.0);
+  RusanovFlux flux;
+
+  ModalVector u(Ne, fe.DoFs());
+  ModalVector rhs(Ne, fe.DoFs());
+
+  u(0, 0) = 0.75;
+
+  residual(fe, mesh, pde, flux, bc, t, u, rhs);
+
+  CheckEqual(rhs(0, 0), 1.5, tol,
+             "Right Dirichlet BC should affect residual through x- and t-dependent value");
 }

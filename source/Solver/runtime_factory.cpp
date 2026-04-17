@@ -11,6 +11,8 @@
 
 #include "Solver/runtime_factory.h"
 
+#include "IO/input_config.h"
+
 #include "PDE/linear_advection1d.h"
 #include "PDE/burgers1d.h"
 
@@ -24,6 +26,35 @@
 
 #include "Temporal/TimeStepController/fixed_time_step.h"
 #include "Temporal/TimeStepController/cfl_time_step.h"
+
+// -----------------------------------------------------------------------------
+// Description: Create a BoundaryCondition1D instance based on the input
+// -----------------------------------------------------------------------------
+BoundaryCondition createBC(const BCInput& input)
+{
+  BoundaryCondition bc;
+
+  if (input.type == "periodic")
+  {
+    bc.type = BoundaryConditionType::Periodic;
+    return bc;
+  }
+
+  if (input.type == "dirichlet")
+  {
+    bc.type = BoundaryConditionType::Dirichlet;
+    bc.expression = std::make_unique<ExpressionFunction>(input.expression);
+    return bc;
+  }
+
+  if (input.type == "outflow")
+  {
+    bc.type = BoundaryConditionType::Outflow;
+    return bc;
+  }
+
+  throw std::runtime_error("Unknown boundary condition type: " + input.type);
+}
 
 // -----------------------------------------------------------------------------
 // Description: Create a PDE instance based on its name

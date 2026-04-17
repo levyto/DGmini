@@ -49,6 +49,11 @@ namespace
   // Description: A valid YAML config string for testing
   // ---------------------------------------------------------------------------
   std::string valid_yaml =
+  "boundary_conditions:\n"
+  "  left:\n"
+  "    type: periodic\n"
+  "  right:\n"
+  "    type: periodic\n"
   "mesh:\n"
   "  x_left: 0.0\n"
   "  x_right: 1.0\n"
@@ -92,8 +97,16 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, "");
   Check(readThrows(reader, filename), "Empty YAML file should throw");
 
-  // 1) Missing fem, pde, flux, ... -> must fail
+  // 1) Missing boundary conditions section -> must fail
   std::string yaml =
+    "boundary_conditions:\n"
+    "  left:\n"
+    "    type: periodic\n"
+    "  right:\n"
+    "    type: periodic\n";
+
+  // 2) Missing mesh -> must fail
+  yaml +=
     "mesh:\n"
     "  x_left: 0.0\n"
     "  x_right: 1.0\n"
@@ -102,7 +115,7 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config with only mesh section should throw");
 
-  // 2) Add fem, still missing others -> must fail
+  // 3) Add fem, still missing others -> must fail
   yaml +=
     "fem:\n"
     "  order: 2\n";
@@ -110,7 +123,7 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config missing PDE/flux/time/output sections should throw");
 
-  // 3) Add pde, still missing others -> must fail
+  // 4) Add pde, still missing others -> must fail
   yaml +=
     "pde:\n"
     "  type: linear_advection\n"
@@ -119,7 +132,7 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config missing flux/time/output sections should throw");
 
-  // 4) Add flux -> still must fail
+  // 5) Add flux -> still must fail
   yaml +=
     "flux:\n"
     "  type: rusanov\n"
@@ -128,7 +141,7 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config missing time integrator/controller/run/output should throw");
 
-  // 5) Add time integrator -> still must fail
+  // 6) Add time integrator -> still must fail
   yaml +=
     "time_integrator:\n"
     "  type: rk3_ssp\n";
@@ -136,7 +149,7 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config missing time step controller/run/output should throw");
 
-  // 6) Add time step controller without required dt for fixed -> must fail
+  // 7) Add time step controller without required dt for fixed -> must fail
   yaml +=
     "time_step_controller:\n"
     "  type: fixed\n";
@@ -144,14 +157,14 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Fixed time step controller without dt should throw");
 
-  // 7) Add dt, but still missing run/output/initial_condition -> must fail
+  // 8) Add dt, but still missing run/output/initial_condition -> must fail
   yaml +=
     "  dt: 0.001\n";
 
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config missing run/output/initial_condition should throw");
 
-  // 8) Add run -> still must fail
+  // 9) Add run -> still must fail
   yaml +=
     "run:\n"
     "  final_time: 0.1\n";
@@ -159,21 +172,21 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config missing initial_condition/output should throw");
 
-  // 9) Add initial_condition without expression -> must fail
+  // 10) Add initial_condition without expression -> must fail
   yaml +=
     "initial_condition:\n";
 
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Initial condition without expression should throw");
 
-  // 10) Add expression, still missing output -> must fail
+  // 11) Add expression, still missing output -> must fail
   yaml +=
     "  expression: sin(2*pi*x)\n";
 
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Config missing output section should throw");
 
-  // 11) Add incomplete output -> must fail
+  // 12) Add incomplete output -> must fail
   yaml +=
     "output:\n"
     "  directory: output\n";
@@ -181,7 +194,7 @@ void Test_ConfigReader_incrementalRequiredKeys()
   writeTextFile(filename, yaml);
   Check(readThrows(reader, filename), "Incomplete output section should throw");
 
-  // 12) Complete output -> config should pass
+  // 13) Complete output -> config should pass
   yaml +=
     "  prefix: solution\n"
     "  output_dt: 0.01\n"
@@ -190,6 +203,78 @@ void Test_ConfigReader_incrementalRequiredKeys()
 
   writeTextFile(filename, yaml);
   Check(!readThrows(reader, filename), "Complete valid config should not throw");
+
+  std::filesystem::remove(filename);
+}
+
+// -----------------------------------------------------------------------------
+// Description: Test boundary condition parsing and validation rules
+// -----------------------------------------------------------------------------
+void Test_ConfigReader_boundaryConditions()
+{
+  const std::string filename = "output/unittest_boundary_conditions.yaml";
+  std::filesystem::create_directories("output");
+
+  ConfigReader reader;
+
+  auto rewrite = [&](const std::string& yaml)
+  {
+    writeTextFile(filename, yaml);
+    return readThrows(reader, filename);
+  };
+
+  // Test dirichlet-outflow pair
+  {
+    std::string dirichlet_yaml = valid_yaml;
+
+    const size_t left_type_pos = dirichlet_yaml.find("type: periodic");
+    dirichlet_yaml.replace(left_type_pos, std::string("type: periodic").size(), "type: dirichlet");
+
+    const size_t right_type_pos = dirichlet_yaml.find("type: periodic", left_type_pos);
+    dirichlet_yaml.replace(right_type_pos, std::string("type: periodic").size(), "type: outflow");
+
+    dirichlet_yaml.insert(left_type_pos + std::string("type: dirichlet\n").size(),
+                          "    expression: \"sin(t)\"\n");
+
+    writeTextFile(filename, dirichlet_yaml);
+    const InputConfig config = reader.read(filename);
+
+    Check(config.boundary_conditions.left.type == "dirichlet",
+          "Left Dirichlet BC type should be read from YAML");
+    Check(config.boundary_conditions.left.expression == "sin(t)",
+          "Left Dirichlet BC expression should be read from YAML");
+    Check(config.boundary_conditions.right.type == "outflow",
+          "Right outflow BC type should be read from YAML");
+    Check(config.boundary_conditions.right.expression.empty(),
+          "Missing non-Dirichlet BC expression should default to empty");
+  }
+
+  // Test dirichlet-dirichlet pair
+  {
+    std::string bad = valid_yaml;
+    const size_t left_type_pos = bad.find("type: periodic");
+    bad.replace(left_type_pos, std::string("type: periodic").size(), "type: dirichlet");
+
+    Check(rewrite(bad), "Dirichlet BC without expression should throw");
+  }
+
+  // Test invalid BC type
+  {
+    std::string bad = valid_yaml;
+    const size_t right_type_pos = bad.rfind("type: periodic");
+    bad.replace(right_type_pos, std::string("type: periodic").size(), "type: invalid_bc");
+
+    Check(rewrite(bad), "Invalid BC type should throw");
+  }
+
+  // Test periodic-non-periodic pair
+  {
+    std::string bad = valid_yaml;
+    const size_t right_type_pos = bad.rfind("type: periodic");
+    bad.replace(right_type_pos, std::string("type: periodic").size(), "type: outflow");
+
+    Check(rewrite(bad), "Mixing periodic and non-periodic BCs should throw");
+  }
 
   std::filesystem::remove(filename);
 }
@@ -372,6 +457,11 @@ void Test_ConfigReader_optionalDefaults()
   std::filesystem::create_directories("output");
 
   const std::string yaml =
+  "boundary_conditions:\n"
+  "  left:\n"
+  "    type: periodic\n"
+  "  right:\n"
+  "    type: periodic\n"
   "mesh:\n"
   "  x_left: 0.0\n"
   "  x_right: 1.0\n"
