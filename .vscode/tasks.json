@@ -38,7 +38,7 @@
     {
       "label": "Run regression tests",
       "type": "shell",
-      "command": "PYTHONDONTWRITEBYTECODE=1 pytest -v",
+      "command": "PYTHONDONTWRITEBYTECODE=1 pytest tests/regression -v",
       "dependsOn": "Build dgmini",
       "problemMatcher": []
     },

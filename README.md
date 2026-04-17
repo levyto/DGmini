@@ -30,6 +30,8 @@ cmake --build build
 ./build/dgmini # runs with input.yaml in root
 
 ./build/dgmini_unittest # To run unittests
+
+pytest tests/regression -v # To run regression tests
 ```
 **VS Code**: 
 The repository includes predefined tasks in `.vscode/tasks.json` for configuring CMake, building `dgmini` and `dgmini_unittest`, and running both executables. Open the project in VS Code and use `Tasks: Run Task` to access them.
@@ -64,7 +66,9 @@ The repository includes predefined tasks in `.vscode/tasks.json` for configuring
 │  ├──IO/         input/output utilities (parsing, data export)
 │  └──main.cpp    program entry point
 │ 
-├──unittest/      unit tests for individual components
+├──tests/ 
+│  ├──regression/ regression tests comparing current outputs against solver referece data
+│  └──unit/       unit tests for individual components
 │
 ├──scripts/       helper scripts (e.g. solution visualization)
 │
