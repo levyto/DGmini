@@ -1,0 +1,39 @@
+meta:
+  application: DGmini
+  version: 0.1
+  description: Input configuration file
+
+mesh:
+  x_left: 0.0
+  x_right: 1.0
+  n_elements: 100
+
+fem:
+  order: 3
+
+pde:
+  type: burgers
+
+flux:
+  type: rusanov
+
+time_integrator:
+  type: rk3_ssp
+
+time_step_controller:
+  type: cfl
+  cfl: 0.4
+
+run:
+  final_time: 1.0
+
+initial_condition:
+  # expression: "sin(2*pi*x)"
+  expression: "exp(-100*(x-0.5)^2)"
+
+output:
+  directory: output/burgers
+  prefix: solution
+  output_dt: 0.01
+  write_initial: true
+  write_final: true
