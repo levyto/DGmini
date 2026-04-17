@@ -2,35 +2,36 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver
 // -----------------------------------------------------------------------------
 //
-// Description: Class for 1D Burgers' PDE, i.e. 
+// Description: Class for 1D LWR (Lighthill-Whitham-Richards) traffic flow PDE, 
+//              i.e. 
 //
-//              u_t + (f(u))_x = 0
-//              with
-//              f(u) = 1/2 * u^2
+//              u_t + (f(u))_x = 0  
+//              with  
+//              f(u) = u * (1 - u)
 //
 // -----------------------------------------------------------------------------
 
-#ifndef BURGERS1D_H
-#define BURGERS1D_H
+#ifndef LWR_TRAFFIC_FLOW1D_H
+#define LWR_TRAFFIC_FLOW1D_H
 
 #include <cmath>
 
 #include "pde.h"
 
-class Burgers1D : public PDE
+class LWRTrafficFlow1D : public PDE
 {
   public:
     // -------------------------------------------------------------------------
     // Construction
     // -------------------------------------------------------------------------
-    Burgers1D() = default;
+    LWRTrafficFlow1D() = default;
 
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
     double convectiveFlux(double state) const override
     {
-      return 0.5 * state * state;
+      return state * (1 - state);
     }
 
     // -------------------------------------------------------------------------
@@ -42,7 +43,8 @@ class Burgers1D : public PDE
     // -------------------------------------------------------------------------
     double maxConvectiveEigenvalue(double state) const override
     {
-      return std::abs(state);
+      double f_prime = 1 - 2 * state;
+      return std::abs(f_prime);
     }
 
   private:

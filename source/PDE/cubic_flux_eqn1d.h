@@ -2,35 +2,35 @@
 //              DGmini, a minimal 1D discontinuous Galerkin solver
 // -----------------------------------------------------------------------------
 //
-// Description: Class for 1D Burgers' PDE, i.e. 
-//
-//              u_t + (f(u))_x = 0
-//              with
-//              f(u) = 1/2 * u^2
+// Description: Class for 1D cubic flux PDE, i.e. 
+//              
+//              u_t + (f(u))_x = 0  
+//              with  
+//              f(u) = u^3
 //
 // -----------------------------------------------------------------------------
 
-#ifndef BURGERS1D_H
-#define BURGERS1D_H
+#ifndef CUBIC_FLUX_EQN1D_H
+#define CUBIC_FLUX_EQN1D_H
 
 #include <cmath>
 
 #include "pde.h"
 
-class Burgers1D : public PDE
+class CubicFluxEqn1D : public PDE
 {
   public:
     // -------------------------------------------------------------------------
     // Construction
     // -------------------------------------------------------------------------
-    Burgers1D() = default;
+    CubicFluxEqn1D() = default;
 
     // -------------------------------------------------------------------------
     // Access
     // -------------------------------------------------------------------------
     double convectiveFlux(double state) const override
     {
-      return 0.5 * state * state;
+      return state * state * state;
     }
 
     // -------------------------------------------------------------------------
@@ -42,7 +42,8 @@ class Burgers1D : public PDE
     // -------------------------------------------------------------------------
     double maxConvectiveEigenvalue(double state) const override
     {
-      return std::abs(state);
+      double f_prime = 3 * state * state;
+      return std::abs(f_prime);
     }
 
   private:
