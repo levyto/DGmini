@@ -139,7 +139,7 @@ void Solver::printSettings() const
   }
   cout << "\n";
 
-  /* Time integration -------------------------------------------------------- */
+  /* Time integration ------------------------------------------------------- */
   cout << "Time integration:\n";
   cout << "  integrator: " << config_.time_integrator.type
        << " (recommended CFL = " << integrator_->recommendedCFL() << ")\n";

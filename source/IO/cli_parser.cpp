@@ -50,7 +50,7 @@ std::string parseCmdLineArgs(int argc, char* argv[])
   {
     if (std::filesystem::exists("./config.yaml"))
     {
-      config_file = "config.yaml";
+      std::cout << "\nFlag --config not provided, using ./config.yaml\n\n";
     }
     else
     {

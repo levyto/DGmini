@@ -25,15 +25,3 @@ int main(int argc, char* argv[])
 
   return 0;
 }
-
-// int main()
-// {
-//   ConfigReader reader;
-//   InputConfig config = reader.read("config.yaml");
-
-//   Solver solver(config);
-
-//   solver.run();
-
-//   return 0;
-// }
