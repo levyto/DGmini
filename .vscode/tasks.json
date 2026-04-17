@@ -43,18 +43,26 @@
       "problemMatcher": []
     },
     {
+      "label": "Run verification tests",
+      "type": "shell",
+      "command": "PYTHONDONTWRITEBYTECODE=1 pytest tests/verification -v",
+      "dependsOn": "Build dgmini",
+      "problemMatcher": []
+    },
+    {
       "label": "Run all tests",
       "dependsOrder": "sequence",
       "dependsOn": [
         "Run dgmini_unittest",
-        "Run regression tests"
+        "Run regression tests",
+        "Run verification tests"
       ],
       "problemMatcher": []
     }
     {
       "label": "Count code lines",
       "type": "shell",
-      "command": "find source unittest -type f \\( -name \"*.cpp\" -o -name \"*.h\" \\) -exec wc -l {} +",
+      "command": "find source tests/unit -type f \\( -name \"*.cpp\" -o -name \"*.h\" \\) -exec wc -l {} +",
       "problemMatcher": []
     }
   ]

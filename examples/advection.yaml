@@ -9,7 +9,7 @@ mesh:
   n_elements: 20
 
 fem:
-  order: 2
+  order: 4
 
 pde:
   type: linear_advection
@@ -20,12 +20,11 @@ flux:
   alpha: 1.0
 
 time_integrator:
-  type: forward_euler
+  type: rk3_ssp
 
 time_step_controller:
   type: cfl
-  cfl: 0.35
-  dt: 0.001   # ignored if type = cfl
+  cfl: 0.4
 
 run:
   final_time: 1.0
@@ -34,8 +33,8 @@ initial_condition:
   expression: "sin(2*pi*x)"
 
 output:
-  directory: output
+  directory: output/advection
   prefix: solution
-  output_dt: 0.01
-  write_initial: true
+  output_dt: 1.0
+  write_initial: false
   write_final: true
