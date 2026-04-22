@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from numpy.polynomial.legendre import legval
 
-from modal_solution_io import (
+from utils_modal_solution_io import (
     read_modal_solution,
     reconstruct_on_element,
     reconstruct_global_solution,
