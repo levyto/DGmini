@@ -5,9 +5,10 @@ meta:
 
 boundary_conditions:
   left:
-    type: periodic
+    type: dirichlet
+    expression: "cos(2*pi*t)"
   right:
-    type: periodic
+    type: outflow
 
 mesh:
   x_left: 0.0
@@ -30,13 +31,13 @@ time_integrator:
 
 time_step_controller:
   type: fixed
-  dt: 0.004
+  dt: 0.0025
 
 run:
-  final_time: 1.0
+  final_time: 1.5
 
 initial_condition:
-  expression: "sin(2*pi*x)"
+  expression: "1"
 
 output:
   directory: output/regression_advection_sin_rk3ssp
