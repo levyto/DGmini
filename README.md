@@ -54,6 +54,8 @@ building the executables, and running unit, regression, and verification tests. 
 - PDEs: 
   - linear advection equation
   - Burgers' equation
+  - (*Buckley-Leverett equation* - not tested yet / need limiter implementation) 
+  - (*LWR traffic flow equation* - not tested yet / need limiter implementation) 
 
 ---
 
